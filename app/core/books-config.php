@@ -10,6 +10,7 @@ class BooksConfig {
 
 	const bookTypeName = 'mvn_book';
 	const bookCategoryName = 'mvnb_category';
+	const bookTableName = 'mvn_books';
 
 	public static function init () {
 

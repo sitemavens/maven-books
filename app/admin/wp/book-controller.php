@@ -48,7 +48,7 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 		global $post;
 
 		if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
-			if ( 'mvn_event' === $post->post_type ) {
+			if ( 'mvn_book' === $post->post_type ) {
 
 				$registry = \MavenBooks\Settings\BooksRegistry::instance();
 
@@ -63,7 +63,7 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 					wp_enqueue_script( 'angular-google-chart', $registry->getBowerComponentUrl() . "angular-google-chart/ng-google-chart.js", 'angular', $registry->getPluginVersion() );
 
 					wp_enqueue_script( 'mavenBooksApp', $registry->getScriptsUrl() . "admin/app.js", 'angular', $registry->getPluginVersion() );
-					wp_enqueue_script( 'admin/controllers/event.js', $registry->getScriptsUrl() . "admin/controllers/event.js", 'mavenBooksApp', $registry->getPluginVersion() );
+					wp_enqueue_script( 'admin/controllers/book.js', $registry->getScriptsUrl() . "admin/controllers/book.js", 'mavenBooksApp', $registry->getPluginVersion() );
 
 
 					wp_enqueue_style( 'bootstrap', $registry->getBowerComponentUrl() . "bootstrap/dist/css/bootstrap.css", null, $registry->getPluginVersion() );
@@ -80,37 +80,22 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 
 	// Add the Books Meta Boxes
 	function addBooksMetaBox() {
-		add_meta_box( 'wpt_events_location', 'Event Information', array( $this, 'showBooks' ), \MavenBooks\Core\BooksConfig::bookTypeName, 'normal', 'default' );
+		add_meta_box( 'wpt_books_location', 'Book Information', array( $this, 'showBooks' ), \MavenBooks\Core\BooksConfig::bookTypeName, 'normal', 'default' );
 	}
 
-	// The Event Location Metabox
+	// The Book Location Metabox
 	function showBooks() {
 
 		global $post;
 
-		\Maven\Loggers\Logger::log()->message( '\MavenBooks\Admin\Wp\EventController: showBooks: ' . $post->ID );
+		\Maven\Loggers\Logger::log()->message( '\MavenBooks\Admin\Wp\BookController: showBooks: ' . $post->ID );
 
-		$eventManager = new \MavenBooks\Core\EventManager();
-		$event = $eventManager->get( $post->ID );
+		$bookManager = new \MavenBooks\Core\BookManager();
+		$book = $bookManager->get( $post->ID );
 
-		$combinations = new \stdClass();
-		if ( $event->isEmpty() ) {
-			$event->setId( $post->ID );
-		} else {
-			$combinations = $this->getCombinations( $event->getId() );
-		}
+		$this->addJSONData( 'book', $book );
 
-		$this->addJSONData( 'event', $event );
-
-		$pricesOperators = \Maven\Core\Domain\VariationOptionPriceOperator::getOperators();
-
-		$this->addJSONData( 'priceOperators', $pricesOperators );
-
-		$this->addJSONData( 'defaultPriceOperator', \Maven\Core\Domain\VariationOptionPriceOperator::NoChange );
-
-		$this->addJSONData( 'combinations', $combinations );
-
-		echo $this->getOutput()->getWpAdminView( "event" );
+		echo $this->getOutput()->getWpAdminView( "book" );
 	}
 
 	/**
@@ -120,102 +105,33 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 	 */
 	public function save( $postId, $post ) {
 
-		\Maven\Loggers\Logger::log()->message( '\MavenBooks\Admin\Wp\EventController: save: ' . $postId );
+		\Maven\Loggers\Logger::log()->message( '\MavenBooks\Admin\Wp\BookController: save: ' . $postId );
 
-		$this->saveEvent( $post );
+		$this->saveBook( $post );
 	}
+ 
 
-	private function getCombinations( $thingId ) {
-		$combinations = array();
+	private function saveBook( $post ) {
 
-		$variationGroupManager = new \MavenBooks\Core\VariationGroupManager();
-		$variationOptionManager = new \Maven\Core\VariationOptionManager();
-		$groups = $variationGroupManager->getVariationGroups( $thingId );
-
-		foreach ( $groups as $group ) {
-			$combination = array();
-			$combination[ 'id' ] = $group->getId();
-			$combination[ 'groupKey' ] = $group->getGroupKey();
-			$combination[ 'price' ] = $group->getPrice();
-			$combination[ 'priceOperator' ] = $group->getPriceOperator();
-			$combination[ 'quantity' ] = $group->getQuantity();
-
-			$options = array();
-			$keys = explode( '-', $group->getGroupKey() );
-			foreach ( $keys as $key ) {
-				$option = $variationOptionManager->get( $key );
-
-				$options[] = array(
-				    'id' => $option->getId(),
-				    'name' => $option->getName(),
-				    'variationId' => $option->getVariationId(),
-				    'variation' => ''
-				);
-			}
-			$combination[ 'options' ] = $options;
-
-			$combinations[ $group->getGroupKey() ] = $combination;
-		}
-		return empty( $combinations ) ? new \stdClass() : $combinations;
-	}
-
-	private function saveEvent( $post ) {
-
-		$event = new \MavenBooks\Core\Domain\Event();
+		$book = new \MavenBooks\Core\Domain\Book();
 
 		$mvn = $this->getRequest()->getProperty( 'mvn' );
 
 		//Check if we have something in the post, because it can be the quick edit mode
 		if ( $mvn ) {
 
-			\Maven\Loggers\Logger::log()->message( '\MavenBooks\Admin\Wp\EventController: saveEvent: ' . $post->ID );
+			\Maven\Loggers\Logger::log()->message( '\MavenBooks\Admin\Wp\BookController: saveBook: ' . $post->ID );
 
-			$event->load( $mvn[ 'event' ] );
+			$book->load( $mvn[ 'book' ] );
 
-			$event->setId( $post->ID );
-			$event->setName( $post->post_title );
-			$event->setDescription( $post->post_content );
+			$book->setId( $post->ID );
+			$book->setName( $post->post_title );
+			$book->setDescription( $post->post_content );
 
-			$eventManager = new \MavenBooks\Core\EventManager();
-			$eventManager->addEvent( $event );
+			$bookManager = new \MavenBooks\Core\BookManager();
+			$bookManager->addBook( $book );
 
-			$variationManager = new \MavenBooks\Core\VariationManager();
-			//$variations = $variationManager->saveMultiple( $event->getVariations(), $event->getId() );
-
-			$combinations = array();
-			if ( isset( $mvn[ 'event' ][ 'combinations' ] ) ) {
-				$combinations = $mvn[ 'event' ][ 'combinations' ];
-			}
-
-			//save variations, oprtions and groups
-			$variationManager->saveAll( $event->getId(), $event->getVariations(), $combinations );
-
-			/* if ( $combinations ) {
-			  $variationGroupManager = new \MavenBooks\Core\VariationGroupManager();
-
-			  $groupKeys = array();
-
-			  foreach ( $combinations as $combination ) {
-
-			  $variationGroup = new \Maven\Core\Domain\VariationGroup();
-
-			  $variationGroup->setId( $combination[ 'id' ] );
-			  $variationGroup->setGroupKey( $combination[ 'groupKey' ] );
-			  $variationGroup->setPrice( $combination[ 'price' ] );
-			  $variationGroup->setPriceOperator( $combination[ 'priceOperator' ] );
-
-			  $variationGroup->setThingId( $event->getId() );
-
-			  $variationGroupManager->save( $variationGroup );
-
-			  $groupKeys[] = $combination[ 'groupKey' ];
-			  }
-
-			  //remove group keys absent on the post data
-			  $variationGroupManager->deleteMissingGroupKeys( $event->getId(), $groupKeys );
-			  } */
-
-			//$event->setVariations($variations);
+			 
 		}
 	}
 
@@ -226,9 +142,9 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 	 */
 	public function insert( $postId, $post ) {
 
-		\Maven\Loggers\Logger::log()->message( '\MavenBooks\Admin\Wp\EventController: insert' );
+		\Maven\Loggers\Logger::log()->message( '\MavenBooks\Admin\Wp\BookController: insert' );
 
-		$this->saveEvent( $post );
+		$this->saveBook( $post );
 	}
 
 	/**

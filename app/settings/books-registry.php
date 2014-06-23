@@ -42,7 +42,7 @@ class BooksRegistry extends \Maven\Settings\WordpressRegistry {
 						"booksSlugPrefix", 'Books Url Prefix', ''
 				),
 				new Option(
-						"booksSlug", 'Books Url Prefix', 'event'
+						"booksSlug", 'Books Url Prefix', 'book'
 				)
 			);
 

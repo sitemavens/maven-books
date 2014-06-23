@@ -1,6 +1,6 @@
 <?php
 
-namespace MavenEvents\Core;
+namespace MavenBooks\Core;
 
 
 // Exit if accessed directly 
@@ -28,7 +28,7 @@ class CategoryManager {
 
 	/**
 	 * 
-	 * @param \MavenEvents\Core\Domain\Category or array $category
+	 * @param \MavenBooks\Core\Domain\Category or array $category
 	 * @return \Maven\Core\Message\Message
 	 */
 	function addCategory( $category ) {
@@ -47,23 +47,26 @@ class CategoryManager {
 
 	public function get( $id ) {
 
-		if ( ! $id )
+		if ( !$id ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'ID is required' );
+		}
 
 		$mapper = new Mappers\CategoryMapper();
 
 		$category = $mapper->get( $id );
 
-		if ( ! $category )
+		if ( !$category ) {
 			throw new \Maven\Exceptions\NotFoundException( 'Category not found:' . $id );
+		}
 
 		return $category;
 	}
 
 	public function delete( $id ) {
 
-		if ( ! $id )
+		if ( !$id ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'ID is required' );
+		}
 
 		$categoryMapper = new Mappers\CategoryMapper();
 

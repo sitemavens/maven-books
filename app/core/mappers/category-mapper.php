@@ -1,14 +1,14 @@
 <?php
 
-namespace MavenEvents\Core\Mappers;
+namespace MavenBooks\Core\Mappers;
 
-use \MavenEvents\Core\EventsConfig;
+use \MavenBooks\Core\EventsConfig;
 
 class CategoryMapper extends \Maven\Core\Db\WordpressMapper {
 
 	public function __construct() {
 
-		parent::__construct( \MavenEvents\Core\EventsConfig::categoriesTableName );
+		parent::__construct( \MavenBooks\Core\EventsConfig::categoriesTableName );
 	}
 
 	public function getAll( $orderBy = "name", $orderType = 'desc', $start = 0, $limit = 1000 ) {
@@ -20,7 +20,7 @@ class CategoryMapper extends \Maven\Core\Db\WordpressMapper {
 		$results = $this->getResults( $orderBy, $orderType, $start, $limit );
 
 		foreach ( $results as $row ) {
-			$category = new \MavenEvents\Core\Domain\Category();
+			$category = new \MavenBooks\Core\Domain\Category();
 			$this->fillObject( $category, $row );
 
 			// If we fell that performance is an issue, this line can be improved, reading all the term data together with the venues.
@@ -45,14 +45,14 @@ class CategoryMapper extends \Maven\Core\Db\WordpressMapper {
 	/**
 	 * Return a Category object
 	 * @param int $id
-	 * @return \MavenEvents\Core\Domain\Category
+	 * @return \MavenBooks\Core\Domain\Category
 	 */
 	public function get( $id ) {
 
 		if ( ! $id || ! is_numeric( $id ) )
 			throw new \Maven\Exceptions\MissingParameterException( 'Id: is required' );
 
-		$category = new \MavenEvents\Core\Domain\Category();
+		$category = new \MavenBooks\Core\Domain\Category();
 
 		$row = $this->getRowById( $id );
 
@@ -128,10 +128,10 @@ class CategoryMapper extends \Maven\Core\Db\WordpressMapper {
 	
 	/** Create or update the category to the database
 	 * 
-	 * @param \MavenEvents\Core\Domain\Category $category
-	 * @return \MavenEvents\Core\Domain\Category
+	 * @param \MavenBooks\Core\Domain\Category $category
+	 * @return \MavenBooks\Core\Domain\Category
 	 */
-	public function save( \MavenEvents\Core\Domain\Category $category ) {
+	public function save( \MavenBooks\Core\Domain\Category $category ) {
 
 		$category->sanitize();
 		
@@ -188,7 +188,7 @@ class CategoryMapper extends \Maven\Core\Db\WordpressMapper {
 		$results = $this->db->get_results( $query );
 
 		foreach ( $results as $row ) {
-			$instance = new \MavenEvents\Core\Domain\Category();
+			$instance = new \MavenBooks\Core\Domain\Category();
 			$this->fillObject( $instance, $row );
 
 			$instances[ ] = $instance;
@@ -197,7 +197,7 @@ class CategoryMapper extends \Maven\Core\Db\WordpressMapper {
 		return $instances;
 	}
 	
-	public function addCategories( $categories, \MavenEvents\Core\Domain\Event $event ) {
+	public function addCategories( $categories, \MavenBooks\Core\Domain\Event $event ) {
 
 		if ( is_null( $categories ) ) {
 			$categories = array( );
@@ -231,7 +231,7 @@ class CategoryMapper extends \Maven\Core\Db\WordpressMapper {
 		/* Second: Update/Insert new categories */
 		foreach ( $categories as $category ) {
 
-//			$category = new \MavenEvents\Core\Domain\Category();
+//			$category = new \MavenBooks\Core\Domain\Category();
 //
 //			$this->fillObject( $category, $categoryRow );
 
