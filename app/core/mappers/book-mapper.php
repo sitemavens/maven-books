@@ -98,17 +98,16 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 	public function save( \MavenBooks\Core\Domain\Book $book ) {
 
 		$book->sanitize();
-
 		$bookData = array(
 			'id' => $book->getId(),
-		    'name' => $book->getName(),
-		    'description' => $book->getDescription(),
+			'name' => $book->getName(),
+			'description' => $book->getDescription(),
 			'price' => $book->getPrice(),
-		    'reserved' => $book->isReserved() ? 1 : 0,
+			'reserved' => $book->isReserved() ? 1 : 0,
 			'reservation_password' => $book->getReservationPassword(),
 			'isbn' => $book->getIsbn(),
 			'publication_date' => $book->getPublicationDate(),
-			'publication_place' => $book->getPublicationDate(),
+			'publication_place' => $book->getPublicationPlace(),
 			'inventory_id' => $book->getInventoryId(),
 			'featured' => $book->isFeatured(),
 			'url' => $book->getUrl()
