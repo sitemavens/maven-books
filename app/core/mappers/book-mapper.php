@@ -106,7 +106,7 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 		    'isbn' => $book->getIsbn(),
 		    'publication_date' => $book->getPublicationDate(),
 		    'publication_place' => $book->getPublicationPlace(),
-		    'stock_enabled' => $book->getStockEnabled() ? 1 : 0,
+		    'stock_enabled' => $book->isStockEnabled() ? 1 : 0,
 		    'stock_quantity' => $book->getStockQuantity(),
 		    'inventory_id' => $book->getInventoryId(),
 		    'featured' => $book->isFeatured() ? 1 : 0,

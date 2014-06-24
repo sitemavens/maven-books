@@ -123,7 +123,7 @@ class Book extends \Maven\Core\DomainObject {
 		$this->reservationPassword = $reservationPassword;
 	}
 
-	public function getStockEnabled() {		
+	public function isStockEnabled() {		
 		return $this->stockEnabled;
 	}
 
