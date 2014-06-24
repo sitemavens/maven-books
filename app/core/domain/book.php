@@ -14,6 +14,8 @@ class Book extends \Maven\Core\DomainObject {
 	private $publicationDate;
 	private $publicationPlace;
 	private $inventoryId;
+	private $stockEnabled = false;
+	private $stockQuantity;
 	private $url;
 
 	public function __construct( $id = false ) {
@@ -31,6 +33,8 @@ class Book extends \Maven\Core\DomainObject {
 		    'publicationDate' => \Maven\Core\SanitizationRule::Date,
 		    'publicationPlace' => \Maven\Core\SanitizationRule::Text,
 		    'inventoryId' => \Maven\Core\SanitizationRule::Text,
+		    'stockEnabled' => \Maven\Core\SanitizationRule::Boolean,
+		    'stockQuantity' => \Maven\Core\SanitizationRule::Integer,
 		    'price' => \Maven\Core\SanitizationRule::Float,
 		    'url' => \Maven\Core\SanitizationRule::Text
 		);
@@ -42,45 +46,49 @@ class Book extends \Maven\Core\DomainObject {
 		return $this->description;
 	}
 
-	public function getName() {
-		return $this->name;
-	}
-
-	public function isFeatured() {
-		return $this->featured;
-	}
-
-	public function getIsbn() {
-		return $this->isbn;
-	}
-
-	public function getPrice() {
-		return $this->price;
-	}
-
 	public function setDescription( $description ) {
 		$this->description = $description;
+	}
+
+	public function getName() {
+		return $this->name;
 	}
 
 	public function setName( $name ) {
 		$this->name = $name;
 	}
 
-	public function isReserved() {
-		return $this->reserved;
+	public function isFeatured() {
+		return $this->featured;
 	}
 
 	public function setFeatured( $featured ) {
 		$this->featured = $featured;
 	}
 
+	public function getIsbn() {
+		return $this->isbn;
+	}
+
 	public function setIsbn( $isbn ) {
 		$this->isbn = $isbn;
+	}
+
+	public function getPrice() {
+		return $this->price;
 	}
 
 	public function setPrice( $price ) {
 
 		$this->price = $price;
+	}
+
+	public function isReserved() {
+		return $this->reserved;
+	}
+
+	public function setReserved( $reserved ) {
+		$this->reserved = $reserved;
 	}
 
 	public function getPublicationDate() {
@@ -95,16 +103,16 @@ class Book extends \Maven\Core\DomainObject {
 		return $this->inventoryId;
 	}
 
+	public function setInventoryId( $inventoryId ) {
+		$this->inventoryId = $inventoryId;
+	}
+
 	public function setPublicationDate( $publicationDate ) {
 		$this->publicationDate = $publicationDate;
 	}
 
 	public function setPublicationPlace( $publicationPlace ) {
 		$this->publicationPlace = $publicationPlace;
-	}
-
-	public function setInventoryId( $inventoryId ) {
-		$this->inventoryId = $inventoryId;
 	}
 
 	public function getReservationPassword() {
@@ -115,8 +123,20 @@ class Book extends \Maven\Core\DomainObject {
 		$this->reservationPassword = $reservationPassword;
 	}
 
-	public function setReserved( $reserved ) {
-		$this->reserved = $reserved;
+	public function getStockEnabled() {		
+		return $this->stockEnabled;
+	}
+
+	public function setStockEnabled( $stockEnabled ) {
+		$this->stockEnabled = $stockEnabled;
+	}
+
+	public function getStockQuantity() {
+		return $this->stockQuantity;
+	}
+
+	public function setStockQuantity( $stockQuantity ) {
+		$this->stockQuantity = $stockQuantity;
 	}
 
 	public function getUrl() {

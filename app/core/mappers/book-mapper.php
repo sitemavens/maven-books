@@ -7,22 +7,20 @@ use \MavenBooks\Core\Domain\BookFilterType;
 
 class BookMapper extends \Maven\Core\Db\WordpressMapper {
 
-
 	public function __construct() {
 
 		parent::__construct( \MavenBooks\Core\BooksConfig::bookTableName );
 	}
 
-	
 	public function getAll( $orderBy = "name" ) {
 
-		$books = array( );
+		$books = array();
 		$results = $this->getResults( $orderBy );
 
 		foreach ( $results as $row ) {
 			$book = new \MavenBooks\Core\Domain\Book();
 			$this->fillObject( $book, $row );
-			$books[ ] = $book;
+			$books[] = $book;
 		}
 
 		return $books;
@@ -53,14 +51,14 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 
 		$book = new \MavenBooks\Core\Domain\Book();
 
-		if ( !$id ) {
+		if ( ! $id ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Id: is required' );
 		}
 
 
 		$row = $this->getRowById( $id );
 
-		if ( ! $row ){
+		if ( ! $row ) {
 			return $book;
 		}
 
@@ -79,7 +77,7 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 
 	public function remove( $id ) {
 
-		if ( !$id ) {
+		if ( ! $id ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Id: is required' );
 		}
 
@@ -99,55 +97,57 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 
 		$book->sanitize();
 		$bookData = array(
-			'id' => $book->getId(),
-			'name' => $book->getName(),
-			'description' => $book->getDescription(),
-			'price' => $book->getPrice(),
-			'reserved' => $book->isReserved() ? 1 : 0,
-			'reservation_password' => $book->getReservationPassword(),
-			'isbn' => $book->getIsbn(),
-			'publication_date' => $book->getPublicationDate(),
-			'publication_place' => $book->getPublicationPlace(),
-			'inventory_id' => $book->getInventoryId(),
-			'featured' => $book->isFeatured(),
-			'url' => $book->getUrl()
+		    'id' => $book->getId(),
+		    'name' => $book->getName(),
+		    'description' => $book->getDescription(),
+		    'price' => $book->getPrice(),
+		    'reserved' => $book->isReserved() ? 1 : 0,
+		    'reservation_password' => $book->getReservationPassword(),
+		    'isbn' => $book->getIsbn(),
+		    'publication_date' => $book->getPublicationDate(),
+		    'publication_place' => $book->getPublicationPlace(),
+		    'stock_enabled' => $book->getStockEnabled() ? 1 : 0,
+		    'stock_quantity' => $book->getStockQuantity(),
+		    'inventory_id' => $book->getInventoryId(),
+		    'featured' => $book->isFeatured() ? 1 : 0,
+		    'url' => $book->getUrl()
 		);
 
 		$format = array(
-			'%d', //id
+		    '%d', //id
 		    '%s', //name
 		    '%s', //description
-			'%f', //price
-			'%d', //reserved
-			'%s', //reservation_password
-			'%s', //isbn
-			'%s', //publication_date
-			'%s', //publication_place,
-			'%s', //inventory_id,
-			'%d', //featured
-			'%s' //url,
-			
+		    '%f', //price
+		    '%d', //reserved
+		    '%s', //reservation_password
+		    '%s', //isbn
+		    '%s', //publication_date
+		    '%s', //publication_place,
+		    '%d', //stock_enabled,
+		    '%s', //stock_quantity,
+		    '%s', //inventory_id,
+		    '%d', //featured
+		    '%s' //url,
 		);
-		
+
 		$columns = '';
-		$values  = '';
+		$values = '';
 		$updateValues = '';
-		$i =0;
-		
-		foreach( $bookData as $key=>$value ){
-			$columns =  $columns ?  $columns.", ".$key : $key;
-			$values = $values ? $values.", ".$format[$i] : $format[$i];
-			$updateValues = $updateValues ? $updateValues.", "."{$key}=values({$key})" : "{$key}=values({$key})";
-			$i++;
+		$i = 0;
+
+		foreach ( $bookData as $key => $value ) {
+			$columns = $columns ? $columns . ", " . $key : $key;
+			$values = $values ? $values . ", " . $format[ $i ] : $format[ $i ];
+			$updateValues = $updateValues ? $updateValues . ", " . "{$key}=values({$key})" : "{$key}=values({$key})";
+			$i ++;
 		}
-		
+
 		$query = $this->prepare( "INSERT INTO {$this->tableName} ({$columns}) VALUES ($values)
-					ON DUPLICATE KEY UPDATE {$updateValues};",  array_values($bookData));
+					ON DUPLICATE KEY UPDATE {$updateValues};", array_values( $bookData ) );
 		//die($query);
-		$this->executeQuery($query);
-		
+		$this->executeQuery( $query );
+
 		return $book;
-		  
 	}
 
 	public function fill( $object, $row ) {

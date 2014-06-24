@@ -28,7 +28,7 @@
 				<div class="form-group"  >
 					<label for="" class="col-sm-2 control-label">Featured:</label>
 					<div class="col-sm-5">
-						<input class="form-control" type="checkbox" value="1" ng-model="book.featured"/>
+						<input class="form-control" type="checkbox" value="1" ng-model="book.featured" name="mvn[book][featured]"/>
 					</div>
 				</div>
 				<div class="form-group"  >
@@ -41,6 +41,18 @@
 					<label for="" class="col-sm-2 control-label">Publication Place:</label>
 					<div class="col-sm-5">
 						<input class="form-control" type="input" ng-model="book.publicationPlace" name="mvn[book][publicationPlace]"  />
+					</div>
+				</div>
+				<div class="form-group"  >
+					<label for="" class="col-sm-2 control-label">Manage Stock:</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="checkbox" ng-model="book.stockEnabled" value="1" name="mvn[book][stockEnabled]"/>
+					</div>
+				</div>
+				<div class="form-group"  >
+					<label for="" class="col-sm-2 control-label">Stock:</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="input" ng-model="book.stockQuantity" name="mvn[book][stockQuantity]"  />
 					</div>
 				</div>
 

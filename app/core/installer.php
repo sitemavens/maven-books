@@ -31,6 +31,7 @@ class Installer {
 				  `inventory_id` int(11) NOT NULL,
 				  `price` float NOT NULL,
 				  `stock_enabled` tinyint(1) NOT NULL,
+				  `stock_quantity` smallint NOT NULL,
 				  `url` varchar(500) NOT NULL,
 				  PRIMARY KEY (`id`)
 				) "

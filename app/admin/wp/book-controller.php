@@ -112,7 +112,6 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
  
 
 	private function saveBook( $post ) {
-
 		$book = new \MavenBooks\Core\Domain\Book();
 
 		$mvn = $this->getRequest()->getProperty( 'mvn' );
@@ -121,9 +120,9 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 		if ( $mvn ) {
 
 			\Maven\Loggers\Logger::log()->message( '\MavenBooks\Admin\Wp\BookController: saveBook: ' . $post->ID );
-
+			
 			$book->load( $mvn[ 'book' ] );
-
+			
 			$book->setId( $post->ID );
 			$book->setName( $post->post_title );
 			$book->setDescription( $post->post_content );
