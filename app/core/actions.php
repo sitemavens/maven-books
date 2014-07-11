@@ -8,11 +8,11 @@ if ( !defined( 'ABSPATH' ) )
 
 class Actions {
 
-	public function UpdateBook ( $book ) {
+	public static function UpdateBook ( $book ) {
 		
 	}
 
-	public function AddBook ( $book ) {
+	public static  function AddBook ( $book ) {
 		
 	}
 

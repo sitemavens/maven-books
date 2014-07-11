@@ -82,10 +82,9 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 		}
 
 		//delete event
-		$this->delete( $id );
+		$this->deleteRow( $id );
 
-		//delete post
-		wp_delete_post( $id );
+		 
 	}
 
 	/** Create or update the donation to the database
