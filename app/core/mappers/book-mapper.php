@@ -123,7 +123,7 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 		    '%s', //publication_date
 		    '%s', //publication_place,
 		    '%d', //stock_enabled,
-		    '%s', //stock_quantity,
+		    '%d', //stock_quantity,
 		    '%s', //inventory_id,
 		    '%d', //featured
 		    '%s' //url,

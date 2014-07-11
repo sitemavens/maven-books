@@ -32,6 +32,12 @@
 					</div>
 				</div>
 				<div class="form-group"  >
+					<label for="" class="col-sm-2 control-label">Inventory ID:</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="input" ng-model="book.inventoryId" name="mvn[book][inventoryId]"  />
+					</div>
+				</div>
+				<div class="form-group"  >
 					<label for="" class="col-sm-2 control-label">Isbn:</label>
 					<div class="col-sm-5">
 						<input class="form-control" type="input" ng-model="book.isbn" name="mvn[book][isbn]"  />
@@ -53,6 +59,12 @@
 					<label for="" class="col-sm-2 control-label">Stock:</label>
 					<div class="col-sm-5">
 						<input class="form-control" type="input" ng-model="book.stockQuantity" name="mvn[book][stockQuantity]"  />
+					</div>
+				</div>
+				<div class="form-group"  >
+					<label for="" class="col-sm-2 control-label">Product Url:</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="input" ng-model="book.url" name="mvn[book][url]"  />
 					</div>
 				</div>
 
