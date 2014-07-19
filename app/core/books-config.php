@@ -50,7 +50,7 @@ class BooksConfig {
 			'label' => __( 'mvn_book', 'text_domain' ),
 			'description' => __( 'Books', 'text_domain' ),
 			'labels' => $labels,
-			'supports' => array(),
+			'supports' => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
 			//'taxonomies' => array( 'mvn_venue' ),
 			'hierarchical' => true,
 			'public' => true,
