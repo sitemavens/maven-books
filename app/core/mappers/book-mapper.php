@@ -100,13 +100,14 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 		    'name' => $book->getName(),
 		    'description' => $book->getDescription(),
 		    'price' => $book->getPrice(),
+			'sale_price' => $book->getSalePrice(),
 		    'reserved' => $book->isReserved() ? 1 : 0,
 			'special' => $book->isSpecial() ? 1 : 0,
 			'date_imprinted' => $book->isDateImprinted() ? 1 : 0,
 			'footnote' => $book->getFootnote(),
 			'imprint' => $book->getImprint(),
 		    'reservation_password' => $book->getReservationPassword(),
-		    'isbn' => $book->getIsbn(),
+		    'ISBN' => $book->getIsbn(),
 		    'publication_date' => $book->getPublicationDate(),
 			'publication_date' => $book->getPublicationDate(),
 		    'publication_year' => $book->getPublicationYear(),
@@ -125,13 +126,14 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 		    '%s', //name
 		    '%s', //description
 		    '%f', //price
+			'%f', //price
 		    '%d', //reserved
 			'%d', //special
 			'%d', //date_imprinted
 			'%s', //footnote
 			'%s', //imprint
 		    '%s', //reservation_password
-		    '%s', //isbn
+		    '%s', //ISBN
 		    '%s', //publication_date
 		    '%s', //publication_place
 			'%d', //publication_year

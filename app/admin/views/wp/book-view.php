@@ -14,6 +14,12 @@
 					</div>
 				</div>
 				<div class="form-group"  >
+					<label for="" class="col-sm-2 control-label">Sale Price:</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="input" ng-model="book.salePrice" name="mvn[book][salePrice]"  />
+					</div>
+				</div>
+				<div class="form-group"  >
 					<label for="" class="col-sm-2 control-label">Is Reserved:</label>
 					<div class="col-sm-5">
 						<input class="form-control" type="checkbox" ng-model="book.reserved" value="1" name="mvn[book][reserved]"/>
