@@ -76,20 +76,6 @@ class BooksFrontEnd {
 		add_filter( "maven/cart/addItem/{$pluginKey}", array( $frontEnd, 'addItem' ) );
 	}
 	
-	/**
-	 * 
-	 * @param \WP_Post|int|null $post
-	 */
-	public static function getBook( $post = null ) {
-
-		if( is_object( $post ) && isset($post->ID) ){
-			$post = $post->ID;
-		}elseif( !$post || !is_numeric( $post ) ){
-			$post = get_the_ID();
-		}
-		$bookManager = new \MavenBooks\Core\BookManager();
-		return $bookManager->get( $post, true );
-
-	}
+	
 
 }
