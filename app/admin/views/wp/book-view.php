@@ -32,6 +32,23 @@
 					</div>
 				</div>
 				<div class="form-group"  >
+					<label for="" class="col-sm-2 control-label">Inventory ID:</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="input" ng-model="book.inventoryId" name="mvn[book][inventoryId]"  />
+					</div>
+				</div>
+				<div class="form-group"  >
+					<label for="" class="col-sm-2 control-label">ISBN:</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="input" ng-model="book.isbn" name="mvn[book][isbn]"  />
+					</div>
+				</div>
+
+			</div>
+		</tab>
+		<tab heading="Details">
+			<div class="form-horizontal" style="margin:15px 0;">
+				<div class="form-group"  >
 					<label for="" class="col-sm-2 control-label">Featured:</label>
 					<div class="col-sm-5">
 						<input class="form-control" type="checkbox" value="1" ng-model="book.featured" name="mvn[book][featured]"/>
@@ -59,18 +76,6 @@
 					<label for="" class="col-sm-2 control-label">Imprint:</label>
 					<div class="col-sm-5">
 						<textarea class="form-control" ng-model="book.imprint" name="mvn[book][imprint]"></textarea>
-					</div>
-				</div>
-				<div class="form-group"  >
-					<label for="" class="col-sm-2 control-label">Inventory ID:</label>
-					<div class="col-sm-5">
-						<input class="form-control" type="input" ng-model="book.inventoryId" name="mvn[book][inventoryId]"  />
-					</div>
-				</div>
-				<div class="form-group"  >
-					<label for="" class="col-sm-2 control-label">Isbn:</label>
-					<div class="col-sm-5">
-						<input class="form-control" type="input" ng-model="book.isbn" name="mvn[book][isbn]"  />
 					</div>
 				</div>
 				<div class="form-group"  >
@@ -121,7 +126,6 @@
 						<input class="form-control" type="input" ng-model="book.stockQuantity" name="mvn[book][stockQuantity]"  />
 					</div>
 				</div>
-
 			</div>
 		</tab>
 

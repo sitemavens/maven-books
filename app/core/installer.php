@@ -29,7 +29,7 @@ class Installer {
 				  `imprint` text NOT NULL,
 				  `reservation_password` varchar(100) NOT NULL,
 				  `featured` int(11) NOT NULL,
-				  `ISBN` varchar(100) NOT NULL,
+				  `isbn` varchar(100) NOT NULL,
 				  `publication_date` date NOT NULL,
 				  `publication_place` varchar(500) NOT NULL,
 				  `publication_year` int(4) NOT NULL,

@@ -107,7 +107,7 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 			'footnote' => $book->getFootnote(),
 			'imprint' => $book->getImprint(),
 		    'reservation_password' => $book->getReservationPassword(),
-		    'ISBN' => $book->getIsbn(),
+		    'isbn' => $book->getIsbn(),
 		    'publication_date' => $book->getPublicationDate(),
 			'publication_date' => $book->getPublicationDate(),
 		    'publication_year' => $book->getPublicationYear(),
@@ -133,7 +133,7 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 			'%s', //footnote
 			'%s', //imprint
 		    '%s', //reservation_password
-		    '%s', //ISBN
+		    '%s', //isbn
 		    '%s', //publication_date
 		    '%s', //publication_place
 			'%d', //publication_year
