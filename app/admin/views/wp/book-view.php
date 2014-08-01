@@ -121,12 +121,6 @@
 						<input class="form-control" type="input" ng-model="book.stockQuantity" name="mvn[book][stockQuantity]"  />
 					</div>
 				</div>
-				<div class="form-group"  >
-					<label for="" class="col-sm-2 control-label">Product Url:</label>
-					<div class="col-sm-5">
-						<input class="form-control" type="input" ng-model="book.url" name="mvn[book][url]"  />
-					</div>
-				</div>
 
 			</div>
 		</tab>
