@@ -10,6 +10,7 @@ class BooksConfig {
 
 	const bookTypeName = 'mvn_book';
 	const bookCategoryName = 'mvnb_category';
+	const bookAuthorName = 'mvnb_author';
 	const bookTableName = 'mvn_books';
 
 	public static function init () {
@@ -72,17 +73,17 @@ class BooksConfig {
 
 		// Add category taxonomy. It's not hierarchical
 		$labels = array(
-			'name' => _x( 'Category', 'taxonomy general name' ),
-			'singular_name' => _x( 'Category', 'taxonomy singular name' ),
+			'name' => _x( 'Book Category', 'taxonomy general name' ),
+			'singular_name' => _x( 'Book Category', 'taxonomy singular name' ),
 			'search_items' => __( 'Search Book Categories' ),
 			'popular_items' => __( 'Popular Book Categories' ),
 			'all_items' => __( 'All Book Categories' ),
 			'parent_item' => null,
 			'parent_item_colon' => null,
-			'edit_item' => __( 'Edit Category' ),
-			'update_item' => __( 'Update Category' ),
-			'add_new_item' => __( 'Add New Category' ),
-			'new_item_name' => __( 'New Category Name' ),
+			'edit_item' => __( 'Edit Book Category' ),
+			'update_item' => __( 'Update Book Category' ),
+			'add_new_item' => __( 'Add New Book Category' ),
+			'new_item_name' => __( 'New Book Category Name' ),
 			'separate_items_with_commas' => __( 'Separate book categories with commas' ),
 			'add_or_remove_items' => __( 'Add or remove book categories' ),
 			'choose_from_most_used' => __( 'Choose from the most used book categories' ),
@@ -102,8 +103,37 @@ class BooksConfig {
 
 		register_taxonomy( BooksConfig::bookCategoryName, BooksConfig::bookTypeName, $args );
 
+		// Add category taxonomy. It's not hierarchical
+		$labels = array(
+			'name' => _x( 'Book Author', 'taxonomy general name' ),
+			'singular_name' => _x( 'Book Author', 'taxonomy singular name' ),
+			'search_items' => __( 'Search Book Authors' ),
+			'popular_items' => __( 'Popular Book Authors' ),
+			'all_items' => __( 'All Book Authors' ),
+			'parent_item' => null,
+			'parent_item_colon' => null,
+			'edit_item' => __( 'Edit Book Author' ),
+			'update_item' => __( 'Update Book Author' ),
+			'add_new_item' => __( 'Add New Book Author' ),
+			'new_item_name' => __( 'New Book Author Name' ),
+			'separate_items_with_commas' => __( 'Separate book authors with commas' ),
+			'add_or_remove_items' => __( 'Add or remove book authors' ),
+			'choose_from_most_used' => __( 'Choose from the most used book authors' ),
+			'not_found' => __( 'No book author found.' ),
+			'menu_name' => __( 'Book Authors' )
+		);
 
-  
+		$args = array(
+			'hierarchical' => true,
+			'labels' => $labels,
+			'show_ui' => true,
+			'show_admin_column' => true,
+			'update_count_callback' => '_update_post_term_count',
+			'query_var' => true,
+			'rewrite' => array( 'slug' => 'book-author' )
+		);
+
+		register_taxonomy( BooksConfig::bookAuthorName, BooksConfig::bookTypeName, $args );
 	}
 
 }

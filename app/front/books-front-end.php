@@ -75,5 +75,7 @@ class BooksFrontEnd {
 		$pluginKey = \MavenBooks\Settings\BooksRegistry::instance()->getPluginKey();
 		add_filter( "maven/cart/addItem/{$pluginKey}", array( $frontEnd, 'addItem' ) );
 	}
+	
+	
 
 }
