@@ -101,10 +101,18 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 		    'description' => $book->getDescription(),
 		    'price' => $book->getPrice(),
 		    'reserved' => $book->isReserved() ? 1 : 0,
+			'special' => $book->isSpecial() ? 1 : 0,
+			'date_imprinted' => $book->isDateImprinted() ? 1 : 0,
+			'footnote' => $book->getFootnote(),
+			'imprint' => $book->getImprint(),
 		    'reservation_password' => $book->getReservationPassword(),
 		    'isbn' => $book->getIsbn(),
 		    'publication_date' => $book->getPublicationDate(),
-		    'publication_place' => $book->getPublicationPlace(),
+			'publication_date' => $book->getPublicationDate(),
+		    'publication_year' => $book->getPublicationYear(),
+			'bibliography' => $book->getBibliography(),
+			'author' => $book->getAuthor(),
+			'subtitle' => $book->getSubtitle(),
 		    'stock_enabled' => $book->isStockEnabled() ? 1 : 0,
 		    'stock_quantity' => $book->getStockQuantity(),
 		    'inventory_id' => $book->getInventoryId(),
@@ -118,13 +126,21 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 		    '%s', //description
 		    '%f', //price
 		    '%d', //reserved
+			'%d', //special
+			'%d', //date_imprinted
+			'%s', //footnote
+			'%s', //imprint
 		    '%s', //reservation_password
 		    '%s', //isbn
 		    '%s', //publication_date
-		    '%s', //publication_place,
-		    '%d', //stock_enabled,
-		    '%d', //stock_quantity,
-		    '%s', //inventory_id,
+		    '%s', //publication_place
+			'%d', //publication_year
+			'%s', //bibliography
+			'%s', //author
+			'%s', //subtitle
+		    '%d', //stock_enabled
+		    '%d', //stock_quantity
+		    '%s', //inventory_id
 		    '%d', //featured
 		    '%s' //url,
 		);
