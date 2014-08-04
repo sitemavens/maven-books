@@ -109,7 +109,7 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 		    'reservation_password' => $book->getReservationPassword(),
 		    'isbn' => $book->getIsbn(),
 		    'publication_date' => $book->getPublicationDate(),
-			'publication_date' => $book->getPublicationDate(),
+			'publication_place' => $book->getPublicationPlace(),
 		    'publication_year' => $book->getPublicationYear(),
 			'bibliography' => $book->getBibliography(),
 			'author' => $book->getAuthor(),
@@ -161,7 +161,7 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 
 		$query = $this->prepare( "INSERT INTO {$this->tableName} ({$columns}) VALUES ($values)
 					ON DUPLICATE KEY UPDATE {$updateValues};", array_values( $bookData ) );
-		//die($query);
+
 		$this->executeQuery( $query );
 
 		return $book;

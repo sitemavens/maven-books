@@ -44,7 +44,7 @@ class Book extends \Maven\Core\DomainObject {
 			'reservationPassword' => \Maven\Core\SanitizationRule::Text,
 			'featured' => \Maven\Core\SanitizationRule::Boolean,
 			'isbn' => \Maven\Core\SanitizationRule::Text,
-			'publicationDate' => \Maven\Core\SanitizationRule::Date,
+			'publicationDate' => \Maven\Core\SanitizationRule::Text,
 			'publicationPlace' => \Maven\Core\SanitizationRule::Text,
 			'publicationYear' => \Maven\Core\SanitizationRule::Integer,
 			'bibliography' => \Maven\Core\SanitizationRule::Text,
