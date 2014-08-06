@@ -9,6 +9,7 @@ class Book extends \Maven\Core\DomainObject {
 	private $price;
 	private $salePrice;
 	private $reserved = false;
+	private $status;
 	private $special = false;
 	private $dateImprinted = false;
 	private $footnote;
@@ -37,6 +38,7 @@ class Book extends \Maven\Core\DomainObject {
 			'price' => \Maven\Core\SanitizationRule::Float,
 			'salePrice' => \Maven\Core\SanitizationRule::Float,
 			'reserved' => \Maven\Core\SanitizationRule::Boolean,
+			'status' => \Maven\Core\SanitizationRule::Text,
 			'special' => \Maven\Core\SanitizationRule::Boolean,
 			'dateImprinted' => \Maven\Core\SanitizationRule::Boolean,
 			'footnote' => \Maven\Core\SanitizationRule::Text,
@@ -100,6 +102,15 @@ class Book extends \Maven\Core\DomainObject {
 
 	public function setReserved ( $reserved ) {
 		$this->reserved = $reserved;
+	}
+
+	public function getStatus () {
+		return $this->status;
+	}
+
+	public function setStatus ( $status ) {
+
+		$this->status = $status;
 	}
 
 	public function isSpecial () {

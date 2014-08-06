@@ -23,6 +23,7 @@ class Installer {
 				  `name` varchar(500) NOT NULL,
 				  `description` text NOT NULL,
 				  `reserved` tinyint(1) NOT NULL,
+				  `status` varchar(50) NOT NULL,
 				  `special` tinyint(1) NOT NULL,
 				  `date_imprinted` tinyint(1) NOT NULL,
 				  `footnote` text NOT NULL,

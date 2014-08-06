@@ -7,12 +7,12 @@ use \MavenBooks\Core\Domain\BookFilterType;
 
 class BookMapper extends \Maven\Core\Db\WordpressMapper {
 
-	public function __construct() {
+	public function __construct () {
 
 		parent::__construct( \MavenBooks\Core\BooksConfig::bookTableName );
 	}
 
-	public function getAll( $orderBy = "name" ) {
+	public function getAll ( $orderBy = "name" ) {
 
 		$books = array();
 		$results = $this->getResults( $orderBy );
@@ -26,7 +26,7 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 		return $books;
 	}
 
-	public function getBooksCount( $type ) {
+	public function getBooksCount ( $type ) {
 
 		$where = $this->getWhereByType( $type );
 
@@ -47,18 +47,18 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 	 * @param bool $readWpPost
 	 * @return \MavenBooks\Core\Domain\Book
 	 */
-	public function get( $id, $readWpPost = true ) {
+	public function get ( $id, $readWpPost = true ) {
 
 		$book = new \MavenBooks\Core\Domain\Book();
 
-		if ( ! $id ) {
+		if ( !$id ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Id: is required' );
 		}
 
 
 		$row = $this->getRowById( $id );
 
-		if ( ! $row ) {
+		if ( !$row ) {
 			return $book;
 		}
 
@@ -75,16 +75,14 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 		return $book;
 	}
 
-	public function remove( $id ) {
+	public function remove ( $id ) {
 
-		if ( ! $id ) {
+		if ( !$id ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Id: is required' );
 		}
 
 		//delete event
 		$this->deleteRow( $id );
-
-		 
 	}
 
 	/** Create or update the donation to the database
@@ -92,59 +90,61 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 	 * @param \MavenBooks\Core\Domain\Book $book
 	 * @return \MavenBooks\Core\Domain\Book
 	 */
-	public function save( \MavenBooks\Core\Domain\Book $book ) {
+	public function save ( \MavenBooks\Core\Domain\Book $book ) {
 
 		$book->sanitize();
 		$bookData = array(
-		    'id' => $book->getId(),
-		    'name' => $book->getName(),
-		    'description' => $book->getDescription(),
-		    'price' => $book->getPrice(),
+			'id' => $book->getId(),
+			'name' => $book->getName(),
+			'description' => $book->getDescription(),
+			'price' => $book->getPrice(),
 			'sale_price' => $book->getSalePrice(),
-		    'reserved' => $book->isReserved() ? 1 : 0,
+			'reserved' => $book->isReserved() ? 1 : 0,
+			'status' => $book->getStatus(),
 			'special' => $book->isSpecial() ? 1 : 0,
 			'date_imprinted' => $book->isDateImprinted() ? 1 : 0,
 			'footnote' => $book->getFootnote(),
 			'imprint' => $book->getImprint(),
-		    'reservation_password' => $book->getReservationPassword(),
-		    'isbn' => $book->getIsbn(),
-		    'publication_date' => $book->getPublicationDate(),
+			'reservation_password' => $book->getReservationPassword(),
+			'isbn' => $book->getIsbn(),
+			'publication_date' => $book->getPublicationDate(),
 			'publication_place' => $book->getPublicationPlace(),
-		    'publication_year' => $book->getPublicationYear(),
+			'publication_year' => $book->getPublicationYear(),
 			'bibliography' => $book->getBibliography(),
 			'author' => $book->getAuthor(),
 			'subtitle' => $book->getSubtitle(),
-		    'stock_enabled' => $book->isStockEnabled() ? 1 : 0,
-		    'stock_quantity' => $book->getStockQuantity(),
-		    'inventory_id' => $book->getInventoryId(),
-		    'featured' => $book->isFeatured() ? 1 : 0,
-		    'url' => $book->getUrl()
+			'stock_enabled' => $book->isStockEnabled() ? 1 : 0,
+			'stock_quantity' => $book->getStockQuantity(),
+			'inventory_id' => $book->getInventoryId(),
+			'featured' => $book->isFeatured() ? 1 : 0,
+			'url' => $book->getUrl()
 		);
 
 		$format = array(
-		    '%d', //id
-		    '%s', //name
-		    '%s', //description
-		    '%f', //price
+			'%d', //id
+			'%s', //name
+			'%s', //description
 			'%f', //price
-		    '%d', //reserved
+			'%f', //price
+			'%d', //reserved
+			'%s', //status
 			'%d', //special
 			'%d', //date_imprinted
 			'%s', //footnote
 			'%s', //imprint
-		    '%s', //reservation_password
-		    '%s', //isbn
-		    '%s', //publication_date
-		    '%s', //publication_place
+			'%s', //reservation_password
+			'%s', //isbn
+			'%s', //publication_date
+			'%s', //publication_place
 			'%d', //publication_year
 			'%s', //bibliography
 			'%s', //author
 			'%s', //subtitle
-		    '%d', //stock_enabled
-		    '%d', //stock_quantity
-		    '%s', //inventory_id
-		    '%d', //featured
-		    '%s' //url,
+			'%d', //stock_enabled
+			'%d', //stock_quantity
+			'%s', //inventory_id
+			'%d', //featured
+			'%s' //url,
 		);
 
 		$columns = '';
@@ -167,7 +167,7 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 		return $book;
 	}
 
-	public function fill( $object, $row ) {
+	public function fill ( $object, $row ) {
 		$this->fillObject( $object, $row );
 	}
 
