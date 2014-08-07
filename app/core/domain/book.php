@@ -112,6 +112,14 @@ class Book extends \Maven\Core\DomainObject {
 
 		$this->status = $status;
 	}
+	
+	public function isAvailable () {
+		return ( $this->getStatus() === 'available' );
+	}
+	
+	public function isNotAvailable () {
+		return ( $this->getStatus() === 'not_available' );
+	}
 
 	public function isSpecial () {
 		return $this->special;
@@ -226,6 +234,10 @@ class Book extends \Maven\Core\DomainObject {
 		$this->inventoryId = $inventoryId;
 	}
 
+	public function isInStock () {
+		return ( $this->getStockQuantity() > 0 || !$this->isStockEnabled() );
+	}
+	
 	public function isStockEnabled () {
 		return $this->stockEnabled;
 	}
