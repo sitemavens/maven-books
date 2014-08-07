@@ -145,13 +145,21 @@ class BookManager {
 		return $book;
 	}
 
-	public function getBookBy( $column, $value, $format = '%d' ) {
+	/**
+	 * 
+	 * @param string $property
+	 * @param mix $value
+	 * @return \MavenBooks\Core\Domain\Book
+	 * @throws \Maven\Exceptions\MissingParameterException
+	 * @throws \Maven\Exceptions\NotFoundException
+	 */
+	public function getBookByProperty( $property, $value ) {
 
-		if ( !$column || !$value ) {
-			throw new \Maven\Exceptions\MissingParameterException( "Book field anda value are required" );
+		if ( !$property || !$value ) {
+			throw new \Maven\Exceptions\MissingParameterException( "Book property is required" );
 		}
 
-		$book = $this->bookMapper->getBy( $column, $value, $format );
+		$book = $this->bookMapper->getByProperty( $property, $value );
 
 		if ( !$book ) {
 			throw new \Maven\Exceptions\NotFoundException( 'Book not found' );

@@ -75,15 +75,38 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 		return $book;
 	}
 	
+	
 	/**
-	 * Return a event object
-	 * @param int $id/array
-	 * @param bool $readWpPost
+	 * Return a book object
+	 * @param string $column
+	 * @param mix $value
 	 * @return \MavenBooks\Core\Domain\Book
 	 */
-	public function getBy( $column, $value, $format = '%d' ) {
+	public function getByProperty( $property, $value ) {
 
 		$book = new \MavenBooks\Core\Domain\Book();
+
+		switch ( $property ){
+			case "inventoryId":
+				$column = "inventory_id";
+				$format = "%d";
+				break;
+			case "name":
+				$column = "name";
+				$format = "%s";
+				break;
+			case "id":
+				$column = "id";
+				$format = "%d";
+				break;
+			default:
+				$column = false;
+				$format = false;
+		}
+		
+		if ( !$column ) {
+			return $book;
+		}
 
 		$row = $this->getRowBy($column, $value, $format);
 

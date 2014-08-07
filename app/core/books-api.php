@@ -9,6 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class BooksApi {
 
+	private static $bookManager;
+	
 	/**
 	 * 
 	 * @param \MavenBooks\Core\BookFilter $filter
@@ -16,47 +18,60 @@ class BooksApi {
 	 */
 	public static function getBooks( \MavenBooks\Core\BookFilter $filter ) {
 
-		$manager = new BookManager();
-		
-		return $manager->getBooks( $filter );
+		return self::getBookManager()->getBooks( $filter );
 			
 	}
 	
+	/**
+	 * 
+	 * @return \MavenBooks\Core\BookManager
+	 */
+	private static function getBookManager(){
+		
+		if ( ! self::$bookManager ){
+			self::$bookManager = new BookManager();
+		
+		}
+		
+		return self::$bookManager;
+	}
 	
 	
 	/**
 	 * 
+	 * @param string $property
+	 * @param mix $value
+	 * @return \MavenBooks\Core\Domain\Book
+	 */
+	public static function getBookByProperty( $property, $value ){
+			 
+		return self::getBookManager()->getBookByProperty($property, $value);
+	}
+	
+	/**
+	 *  Get Book
 	 * @param int/object $book
+	 * @return \MavenBooks\Core\Domain\Book
+	 * @throws \Maven\Exceptions\MissingParameterException
+	 * @throws \Maven\Exceptions\MavenException
 	 */
 	public static function getBook( $book ){
 		
 		if ( !$book ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Book is required. It can be an id or a wp post' );
 		}
-
-
-		$manager = new \MavenBooks\Core\BookManager();
-		
+ 
 		if ( is_object( $book ) && isset( $book->ID ) ) {
-			return $manager->getBookFromPost( $book );
+			return self::getBookManager()->getBookFromPost( $book );
 		} else if ( is_numeric( $book ) ) {
-			return $manager->get( $book );
+			return self::getBookManager()->get( $book );
 		} else {
-			return $manager->getBookBySlug( $book );
+			return self::getBookManager()->getBookBySlug( $book );
 		}
 
 		throw new \Maven\Exceptions\MavenException('Invalid event');
 	}
-	/**
-	 * 
-	 * @param int/object $book
-	 */
-	public static function getBookBy( $column, $value, $format = '%d' ){
-		
-		$manager = new \MavenBooks\Core\BookManager();
-		
-		return $manager->getBookBy($column, $value, $format);
-	}
+	 
 
 	/**
 	 * Create a new filter
@@ -73,9 +88,7 @@ class BooksApi {
 	 */
 	public static function updateBook( \MavenBooks\Core\Domain\Book $book ){
 		
-		$manager = new \MavenBooks\Core\BookManager();
-		
-		return $manager->addBook( $book );
+		return self::getBookManager()->addBook( $book );
 		
 	}
    
