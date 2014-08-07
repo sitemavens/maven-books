@@ -144,6 +144,21 @@ class BookManager {
 
 		return $book;
 	}
+
+	public function getBookBy( $column, $value, $format = '%d' ) {
+
+		if ( !$column || !$value ) {
+			throw new \Maven\Exceptions\MissingParameterException( "Book field anda value are required" );
+		}
+
+		$book = $this->bookMapper->getBy( $column, $value, $format );
+
+		if ( !$book ) {
+			throw new \Maven\Exceptions\NotFoundException( 'Book not found' );
+		}
+
+		return $book;
+	}
  
 
 	/**

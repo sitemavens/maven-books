@@ -12,6 +12,9 @@ class Main {
 
 		$bookController = new \MavenBooks\Admin\Wp\BookController();
 		$bookController->init();
+		
+		$taxonomiesController = new \MavenBooks\Admin\Wp\TaxonomiesController();
+		$taxonomiesController->init();
 
 		//$eventListController = new Wp\EventListController();
 		//$eventListController->init();

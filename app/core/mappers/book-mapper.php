@@ -74,6 +74,27 @@ class BookMapper extends \Maven\Core\Db\WordpressMapper {
 
 		return $book;
 	}
+	
+	/**
+	 * Return a event object
+	 * @param int $id/array
+	 * @param bool $readWpPost
+	 * @return \MavenBooks\Core\Domain\Book
+	 */
+	public function getBy( $column, $value, $format = '%d' ) {
+
+		$book = new \MavenBooks\Core\Domain\Book();
+
+		$row = $this->getRowBy($column, $value, $format);
+
+		if ( ! $row ) {
+			return $book;
+		}
+
+		$this->fillObject( $book, $row );
+
+		return $book;
+	}
 
 	public function remove( $id ) {
 

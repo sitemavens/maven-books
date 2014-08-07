@@ -43,7 +43,17 @@ class Installer {
 				  `stock_quantity` smallint NOT NULL,
 				  `url` varchar(500) NOT NULL,
 				  PRIMARY KEY (`id`)
-				) "
+				) ",
+			"CREATE TABLE  IF NOT EXISTS {$wpdb->prefix}term_taxonomymeta (
+				meta_id bigint(20) unsigned NOT NULL auto_increment,
+				term_taxonomy_id bigint(20) unsigned NOT NULL default '0',
+				meta_key varchar(255) NOT NULL,
+				meta_value longtext,
+				PRIMARY KEY	(meta_id),
+				KEY term_taxonomy_id (term_taxonomy_id),
+				KEY meta_key (meta_key),
+				KEY `ttid_key` (`term_taxonomy_id`,`meta_key`)
+			);"
 		);
 
 		foreach ( $create AS $sql ) {

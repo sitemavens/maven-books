@@ -47,6 +47,16 @@ class BooksApi {
 
 		throw new \Maven\Exceptions\MavenException('Invalid event');
 	}
+	/**
+	 * 
+	 * @param int/object $book
+	 */
+	public static function getBookBy( $column, $value, $format = '%d' ){
+		
+		$manager = new \MavenBooks\Core\BookManager();
+		
+		return $manager->getBookBy($column, $value, $format);
+	}
 
 	/**
 	 * Create a new filter
