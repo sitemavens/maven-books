@@ -49,6 +49,12 @@
 		<tab heading="Details">
 			<div class="form-horizontal" style="margin:15px 0;">
 				<div class="form-group"  >
+					<label for="" class="col-sm-2 control-label">Status:</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="input" ng-model="book.status" name="mvn[book][status]"/>
+					</div>
+				</div>
+				<div class="form-group"  >
 					<label for="" class="col-sm-2 control-label">Featured:</label>
 					<div class="col-sm-5">
 						<input class="form-control" type="checkbox" value="1" ng-model="book.featured" name="mvn[book][featured]"/>
