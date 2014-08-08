@@ -51,7 +51,11 @@
 				<div class="form-group"  >
 					<label for="" class="col-sm-2 control-label">Status:</label>
 					<div class="col-sm-5">
-						<input class="form-control" type="input" ng-model="book.status" name="mvn[book][status]"/>
+						<select class="form-control" ng-model="book.status" name="mvn[book][status]">
+							<option ng-repeat="status in statuses" value="{{status.value}}" title="{{status.name}}" ng-selected="status.value === book.status">
+								{{status.name}}
+							</option>
+						</select>
 					</div>
 				</div>
 				<div class="form-group"  >
