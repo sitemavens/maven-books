@@ -160,9 +160,8 @@ class TaxonomiesController extends \MavenBooks\Admin\BooksAdminController {
 	 */
 	public function saveCategoryForm ( $term_id, $term_taxonomy_id ) {
 		global $taxonomy;
-		if ( !$this->validate_nonce( self::action_edit, 'mvn_category_nonce', '_POST', false ) )
-			return;
-
+//		if ( !$this->validate_nonce( self::action_edit, 'mvn_category_nonce', '_POST', false ) )
+//			return;
 		// Hack for ajax call
 		if ( empty( $taxonomy ) && isset( $_POST[ 'taxonomy' ] ) && !empty( $_POST[ 'taxonomy' ] ) ) {
 			$taxonomy = stripslashes( $_POST[ 'taxonomy' ] );
@@ -170,11 +169,10 @@ class TaxonomiesController extends \MavenBooks\Admin\BooksAdminController {
 		if ( empty( $taxonomy ) ) {
 			return;
 		}
-
-		$mvn_shop_term = $this->exists_post_var( 'mvn_shop_term' ) ? $this->get_post_value( 'mvn_shop_term' ) : array();
-		$is_smart_term = $this->exists_post_var( 'mvn_shop_is_smart_term' ) ? $this->get_post_value( 'mvn_shop_is_smart_term' ) : 0;
-
-		TaxonomiesManager::updateSmartTermValue( $term_taxonomy_id, $is_smart_term );
+		$mvnSmartRules = $this->getRequest()->getProperty( 'mvn_smart_rules' );
+		$mvn_shop_term = isset($mvnSmartRules['smart_rules']) ? $mvnSmartRules['smart_rules'] : array();
+		$is_smart_term = isset($mvnSmartRules['is_smart_term']) ? 1 : 0;
+//		TaxonomiesManager::updateSmartTermValue( $term_taxonomy_id, $is_smart_term );
 
 		$old_smart_rules = $smart_rules = TaxonomiesManager::getSmartRules( $term_taxonomy_id );
 		// Update only if current smart rules are different than the new ones
