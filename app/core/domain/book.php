@@ -114,11 +114,11 @@ class Book extends \Maven\Core\DomainObject {
 	}
 	
 	public function isAvailable () {
-		return ( $this->getStatus() === 'available' );
+		return ( $this->getStatus() === BookStatus::Available );
 	}
 	
 	public function isNotAvailable () {
-		return ( $this->getStatus() === 'not_available' );
+		return ( $this->getStatus() === BookStatus::NotAvailable );
 	}
 
 	public function isSpecial () {
