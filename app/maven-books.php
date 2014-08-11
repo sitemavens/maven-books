@@ -10,8 +10,9 @@
  */
 
 namespace MavenBooks;
+
 use Maven\Core\Loader;
- 
+
 //If the validation was already loaded
 if ( !class_exists( 'MavenValidation' ) ) {
 	require_once plugin_dir_path( __FILE__ ) . 'maven-validation.php';
@@ -22,7 +23,7 @@ if ( \MavenValidation::isMavenMissing() )
 	return;
 
 //Added actions class here, because there are issues with ReflectionClass on Settings controller
-Loader::load( plugin_dir_path( __FILE__ ), array( 'settings/books-registry', 'core/actions' ) );
+Loader::load( plugin_dir_path( __FILE__ ), array( 'settings/books-registry', 'core/actions', 'core/taxonomies-config' ) );
 
 // Instanciate the registry and set all the plugins attributes
 $registry = Settings\BooksRegistry::instance();
@@ -77,7 +78,6 @@ Front\BooksFrontEnd::registerFrontEndHooks();
 if ( is_admin() ) {
 
 	Admin\Main::init();
- 
 }
 
 

@@ -4,18 +4,22 @@ angular.module('mavenBooksApp').controller('TaxonomyController', ['$scope', '$ht
 		$scope.isSmartTerm = CachedIsSmartTerm;
 		$scope.smartTermOperator = CachedSmartTermOperators;
 		$scope.smartTermFields = CachedSmartTermFields;
-		$scope.smartOperator.operators = [{value: "AND"}, {value: "OR"}];
-		angular.forEach(CachedIsSmartTerm, function(rule) {
+		$scope.smartOperator.operators = [{value: "AND", name: "AND"}, {value: "OR", name: "OR"}];
+		if (CachedSmartTermRules.smart_operator === "") {
+			$scope.smartOperator.selected = "AND";
+		} else {
+			$scope.smartOperator.selected = CachedSmartTermRules.smart_operator;
+		}
+		angular.forEach(CachedSmartTermRules.smart_rules, function(rule) {
 			$scope.smartTermRules.push(rule);
 		});
-		console.log($scope.smartTermRules);
-		console.log($scope.smartTermOperator);
 
 		$scope.addSmartTermRule = function(evt) {
 			evt.preventDefault();
-			console.log($scope.smartOperator);
 			if ($scope.smartOperator.hasOwnProperty('selected')) {
 				var newRule = {};
+				newRule.field = "meta:mvn_shop_regular_price";
+				newRule.operator = "is_greater_or_equal_than";
 				$scope.smartTermRules.push(newRule);
 			}
 		};

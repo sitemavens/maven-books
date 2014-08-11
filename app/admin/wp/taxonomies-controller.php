@@ -173,12 +173,11 @@ class TaxonomiesController extends \MavenBooks\Admin\BooksAdminController {
 		$mvn_shop_term = isset( $mvnSmartRules[ 'mvn_shop_term' ] ) ? $mvnSmartRules[ 'mvn_shop_term' ] : array();
 		$is_smart_term = isset( $mvnSmartRules[ 'is_smart_term' ] ) ? 1 : 0;
 		TaxonomiesManager::setSmartTerm( $term_taxonomy_id, $is_smart_term );
-
 		$old_smart_rules = $smart_rules = TaxonomiesManager::getSmartRules( $term_taxonomy_id );
 
 		// Update only if current smart rules are different than the new ones
 		if ( isset( $mvn_shop_term[ 'smart_rules' ] ) && $mvn_shop_term[ 'smart_rules' ] !== $old_smart_rules ) {
-//			die( print_r( $mvn_shop_term[ 'smart_rules' ], true ) );
+
 			TaxonomiesManager::setSmartRules( $term_taxonomy_id, $mvn_shop_term[ 'smart_rules' ] );
 			TaxonomiesManager::setSmartOperator( $term_taxonomy_id, $mvn_shop_term[ 'smart_operator' ] );
 			TaxonomiesManager::relateProductsWithSmartCategories( $term_id, $term_taxonomy_id, $taxonomy, $mvn_shop_term );
