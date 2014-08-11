@@ -170,7 +170,7 @@ class TaxonomiesController extends \MavenBooks\Admin\BooksAdminController {
 			return;
 		}
 		$mvnSmartRules = $this->getRequest()->getProperty( 'mvn_smart_rules' );
-		$mvn_shop_term = isset( $mvnSmartRules[ 'smart_rules' ] ) ? $mvnSmartRules : array();
+		$mvn_shop_term = isset( $mvnSmartRules[ 'mvn_shop_term' ] ) ? $mvnSmartRules[ 'mvn_shop_term' ] : array();
 		$is_smart_term = isset( $mvnSmartRules[ 'is_smart_term' ] ) ? 1 : 0;
 		TaxonomiesManager::setSmartTerm( $term_taxonomy_id, $is_smart_term );
 
