@@ -127,3 +127,42 @@ ul.category-tabs li a:hover, ul.category-tabs li a:active {
 .postbox h1, .postbox h2, .postbox h3, .postbox h4, .postbox h5, .postbox h6 {
     font-weight: 600 !important;
 }
+
+.smart-rule input {
+    margin-left: 10px;
+	padding: 4px 5px;
+    width: 250px;
+}
+
+.smart-rule .add-rule {
+    display: block;
+    float: left;
+    margin-left: 10px;
+}
+
+.smart-rule button.add-rule {
+    margin-left: 0;
+}
+
+li.smart-rule {
+    clear: both;
+    display: table;
+}
+
+ul.smart-rules li.smart-rule {
+    margin: 5px 0;
+}
+
+.smart-rules-form.ng-scope td {
+    padding: 0;
+}
+
+.is-smart-rules-form:first-child td {
+    display: inline-block;
+    width: 200px;
+}
+
+.smart-rule button.add-rule {
+    margin-left: 0;
+    padding-top: 2px;
+}
