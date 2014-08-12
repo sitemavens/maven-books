@@ -15,7 +15,8 @@
 				<?php $lang->_e( 'Is Smart Category' ); ?>
 			</td>
 			<td>
-				<input type="checkbox" name="mvn_smart_rules[is_smart_term]" ng-model="isSmartTerm" ng-change="checkForDuplicates()"/>
+				<input type="checkbox" name="mvn_smart_rules[is_smart_term]" ng-model="isSmartTerm" ng-change="checkForDuplicates()"
+					   ng-true-value="1" ng-false-value="0"/>
 			</td>
 		</tr>
 		<tr class="smart-rules-form" ng-if="isSmartTerm">
