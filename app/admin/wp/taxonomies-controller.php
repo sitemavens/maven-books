@@ -77,6 +77,34 @@ class TaxonomiesController extends \MavenBooks\Admin\BooksAdminController {
 	function _init () {
 		add_filter( 'manage_mvn_product_category_custom_column', array( &$this, 'addProductCategoryColumnContent' ), 10, 3 );
 		add_filter( 'manage_edit-mvn_product_category_columns', array( &$this, 'add_product_category_columns' ) );
+		add_action( 'save_post', array( &$this, 'checkProductSmartCategories' ), 15, 2 );
+	}
+	
+
+	public function checkProductSmartCategories ( $objectId, $object ) {
+		// If this is just a revision, don't send the email.
+		if ( wp_is_post_revision( $objectId ) )
+			return;
+		if ( $object->post_type && $object->post_type !== BooksConfig::bookTypeName )
+			return $objectId;
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+			return $objectId;
+		if ( !current_user_can( 'edit_post', $objectId ) )
+			return $objectId;
+		if ( !TaxonomiesManager::isEnabledSmartCategories() )
+			return $objectId;
+
+		// TODO: we need to get just the smart terms for taxonomies related with this post type
+		
+		$terms = TaxonomiesManager::getTermTaxonomiesByMeta( TaxonomiesManager::SmartMetaSlug, '1' );
+		
+		foreach ( $terms as $term ) {
+			$mvnShopTerm[ 'smart_rules' ] = TaxonomiesManager::getSmartRules( $term->term_taxonomy_id );
+			$mvnShopTerm[ 'smart_operator' ] = TaxonomiesManager::getSmartOperator( $term->term_taxonomy_id );
+			//TODO: sometimes if we select a smart term that could not match with the rules it is automatically removed
+			//it is confuse for the user so we will need to see if we can show a message or something else.
+			TaxonomiesManager::relateProductsWithSmartCategories( ( int ) $term->term_id, ( int ) $term->term_taxonomy_id, $term->taxonomy, $mvnShopTerm, $objectId );
+		}
 	}
 
 	/**

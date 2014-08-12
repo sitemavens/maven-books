@@ -11,39 +11,6 @@ class TaxonomiesManager {
 	const MetaType = 'term_taxonomy';
 	const SmartMetaSlug = 'mvn_is_smart_term';
 
-	public static function init () {
-
-		\Maven\Core\HookManager::instance()->addInit( array( __CLASS__, '_init' ) );
-	}
-
-	public static function _init () {
-		add_action( 'save_post', array( __CLASS__, 'checkProductSmartCategories' ), 15, 2 );
-	}
-
-	public static function checkProductSmartCategories ( $objectId, $object ) {
-		// If this is just a revision, don't send the email.
-		if ( wp_is_post_revision( $objectId ) )
-			return;
-		if ( !$_POST )
-			return $objectId;
-		if ( $object->post_type && !in_array( $object->post_type, BooksConfig::bookTypeName ) )
-			return $objectId;
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-			return $objectId;
-		if ( !current_user_can( 'edit_post', $objectId ) )
-			return $objectId;
-		if ( !self::isEnabledSmartCategories() )
-			return $objectId;
-
-		$terms = self::getTermTaxonomiesByMeta( self::SmartMetaSlug, '1' );
-
-		foreach ( $terms as $term ) {
-			$mvnShopTerm[ 'smart_rules' ] = self::getSmartRules( $term->term_taxonomy_id );
-			$mvnShopTerm[ 'smart_operator' ] = self::getSmartOperator( $term->term_taxonomy_id );
-			self::relateProductsWithSmartCategories( ( int ) $term->term_id, ( int ) $term->term_taxonomy_id, $term->taxonomy, $mvnShopTerm, $objectId );
-		}
-	}
-
 	/**
 	 * Add meta data field to a term.
 	 *
@@ -596,4 +563,4 @@ class TaxonomiesManager {
 //	}
 }
 
-TaxonomiesManager::init();
+//TaxonomiesManager::init();
