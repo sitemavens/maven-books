@@ -1,30 +1,29 @@
-<?php \Maven\Core\UI\HtmlComponent::jSonComponent( 'CachedSmartTermRules', $smartTermRules ); ?>
-<?php \Maven\Core\UI\HtmlComponent::jSonComponent( 'CachedIsSmartTerm', $isSmartTerm ); ?>
-<?php \Maven\Core\UI\HtmlComponent::jSonComponent( 'CachedSmartTermFields', $smartTermFields ); ?>
-<?php \Maven\Core\UI\HtmlComponent::jSonComponent( 'CachedSmartTermOperators', $smartTermOperators ); ?>
-<div >	
-	<table class="form-table smart-rules-form" ng-controller="TaxonomyController">
-		<tr>
-		<td colspan="2">
-			<alert type="alert" ng-hide="smartIsUnique">There should be no duplicate rules</alert>
-			<alert type="alert" ng-show="smartTermRules.length === 0 && isSmartTerm">There should be at least one rule</alert>
-		</td>
-		</tr>
+<tr class="form-field">
+	<td colspan="2">
+	<?php \Maven\Core\UI\HtmlComponent::jSonComponent( 'CachedSmartTermRules', $smartTermRules ); ?>
+	<?php \Maven\Core\UI\HtmlComponent::jSonComponent( 'CachedIsSmartTerm', $isSmartTerm ); ?>
+	<?php \Maven\Core\UI\HtmlComponent::jSonComponent( 'CachedSmartTermFields', $smartTermFields ); ?>
+	<?php \Maven\Core\UI\HtmlComponent::jSonComponent( 'CachedSmartTermOperators', $smartTermOperators ); ?>
+	<table class="smart-rules-form" ng-controller="TaxonomyController">
+		
 		<tr class="is-smart-row">
-			<td>
+			<th>
 				<?php $lang->_e( 'Is Smart Category' ); ?>
-			</td>
-			<td>
-				<input type="checkbox" name="mvn_smart_rules[is_smart_term]" ng-model="isSmartTerm" ng-change="checkForDuplicates()"
+			</th>
+			<td style="text-align: left;">
+				<input style="width: 20px;" type="checkbox" name="mvn_smart_rules[is_smart_term]" ng-model="isSmartTerm" ng-change="checkForDuplicates()"
 					   ng-true-value="1" ng-false-value="0"/>
 			</td>
 		</tr>
-		<tr  ng-if="isSmartTerm">
-			<td colspan="2">
+		<tr ng-if="isSmartTerm">
+			<th>
+				<?php $lang->_e( 'Smart Rules' ); ?>
+			</th>
+			<td>
 				<div class="mvn-shop-category-form-container clear clearfix">
 					<button class="button-secondary" 
 							ng-click="addSmartTermRule($event)">
-						Add Smart Rules
+						<?php $lang->_e( 'Add Smart Rules' ); ?>
 					</button>
 					<select ng-model="smartOperator.selected" ng-options="i.value as i.name for i in smartOperator.operators" >
 					</select>
@@ -42,7 +41,12 @@
 						</li>
 					</ul>
 				</div>
+				<div>
+					<alert type="alert" ng-hide="smartIsUnique"><?php $lang->_e( 'There should be no duplicate rules' ); ?></alert>
+					<alert type="alert" ng-show="smartTermRules.length === 0 && isSmartTerm"><?php $lang->_e( 'There should be at least one rule' ); ?></alert>
+				</div>
 			</td>
 		</tr>
 	</table>
-</div>
+	</td>
+</tr>
