@@ -157,12 +157,17 @@ ul.smart-rules li.smart-rule {
     padding: 0;
 }
 
-.is-smart-rules-form:first-child td {
-    display: inline-block;
-    width: 200px;
-}
-
 .smart-rule button.add-rule {
     margin-left: 0;
     padding-top: 2px;
+}
+
+.form-table.smart-rules-form.ng-scope {
+    margin: 0 auto;
+    width: 555px;
+}
+
+.is-smart-row td:last-child {
+    margin-left: 35px;
+    text-align: right;
 }

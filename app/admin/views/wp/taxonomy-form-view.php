@@ -3,14 +3,14 @@
 <?php \Maven\Core\UI\HtmlComponent::jSonComponent( 'CachedSmartTermFields', $smartTermFields ); ?>
 <?php \Maven\Core\UI\HtmlComponent::jSonComponent( 'CachedSmartTermOperators', $smartTermOperators ); ?>
 <div >	
-	<table class="form-table" ng-controller="TaxonomyController">
+	<table class="form-table smart-rules-form" ng-controller="TaxonomyController">
 		<tr>
 		<td colspan="2">
 			<alert type="alert" ng-hide="smartIsUnique">There should be no duplicate rules</alert>
 			<alert type="alert" ng-show="smartTermRules.length === 0 && isSmartTerm">There should be at least one rule</alert>
 		</td>
 		</tr>
-		<tr class="is-smart-rules-form">
+		<tr class="is-smart-row">
 			<td>
 				<?php $lang->_e( 'Is Smart Category' ); ?>
 			</td>
@@ -19,12 +19,12 @@
 					   ng-true-value="1" ng-false-value="0"/>
 			</td>
 		</tr>
-		<tr class="smart-rules-form" ng-if="isSmartTerm">
+		<tr  ng-if="isSmartTerm">
 			<td colspan="2">
 				<div class="mvn-shop-category-form-container clear clearfix">
 					<button class="button-secondary" 
 							ng-click="addSmartTermRule($event)">
-						Add Rule
+						Add Smart Rules
 					</button>
 					<select ng-model="smartOperator.selected" ng-options="i.value as i.name for i in smartOperator.operators" >
 					</select>
