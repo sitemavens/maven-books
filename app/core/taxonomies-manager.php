@@ -126,8 +126,9 @@ class TaxonomiesManager {
 		$fields = array(
 			'post_date' => __( 'Date Added', 'mvn-shop' ),
 			'post_title' => __( 'Product Name', 'mvn-shop' ),
-			'meta:mvn_shop_regular_price' => __( 'Product Price', 'mvn-shop' ),
-			'term:mvn_product_type' => __( 'Product Type', 'mvn-shop' ),
+			'book:price' => __( 'Product Price', 'mvn-shop' ),
+//			'meta:mvn_shop_regular_price' => __( 'Product Price', 'mvn-shop' ),
+//			'term:mvn_product_type' => __( 'Product Type', 'mvn-shop' ),
 		);
 		return apply_filters( 'mvn_smart_term_fields', $fields );
 	}
@@ -450,6 +451,22 @@ class TaxonomiesManager {
 					}
 
 					// if the field is the price we need to include a validation to regular and sale
+				} elseif ( strpos( $field_key, 'book:' ) !== FALSE ) {
+					// get of the prefix meta: to get the meta data key
+					$tableName = BooksConfig::bookTableName;
+					$field = str_replace( 'book:', '', $field_key );
+					// create a table alias for this field, it is in case there are another meta values to compare
+					$meta_table_alias = "pm_{$field}_{$key}";
+					// add the metadata table join
+					$join .= " INNER JOIN {$tableName} AS {$meta_table_alias} ON {$wpdb->posts}.ID = {$meta_table_alias}.id ";
+
+					// add the value rule
+					if ( $field === 'price' && !empty( $operator ) ) {
+						$where_field .= " ( CAST( {$meta_table_alias}.$field AS DECIMAL ) {$operator} '{$a}{$value}{$b}' )";
+					} elseif ( !empty( $operator ) ) {
+						$where_field .= " ( {$meta_table_alias}.$field {$operator} '{$a}{$value}{$b}' )";
+					}
+					// if the field name contains term: it is a term taxonomy comparison so we will need to join the taxonomy table
 				} elseif ( !empty( $operator ) ) {
 					$field = $field_key;
 					// if it is not a metadata comparison it is trait as a post field

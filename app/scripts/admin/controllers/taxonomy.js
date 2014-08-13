@@ -19,7 +19,7 @@ angular.module('mavenBooksApp').controller('TaxonomyController', ['$scope', '$ht
 			evt.preventDefault();
 			if ($scope.smartOperator.hasOwnProperty('selected')) {
 				var newRule = {};
-				newRule.field = "meta:mvn_shop_regular_price";
+				newRule.field = "book:price";
 				newRule.operator = "is_greater_or_equal_than";
 				$scope.smartTermRules.push(newRule);
 				$scope.checkForDuplicates();
