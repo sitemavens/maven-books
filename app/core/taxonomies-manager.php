@@ -124,9 +124,10 @@ class TaxonomiesManager {
 	 */
 	public static function getSmartFields () {
 		$fields = array(
+			'book:author' => __( 'Book Author', 'mvn-shop' ),
+			'post_title' => __( 'Book Name', 'mvn-shop' ),
+			'book:price' => __( 'Book Price', 'mvn-shop' ),
 			'post_date' => __( 'Date Added', 'mvn-shop' ),
-			'post_title' => __( 'Product Name', 'mvn-shop' ),
-			'book:price' => __( 'Product Price', 'mvn-shop' ),
 //			'meta:mvn_shop_regular_price' => __( 'Product Price', 'mvn-shop' ),
 //			'term:mvn_product_type' => __( 'Product Type', 'mvn-shop' ),
 		);
@@ -331,7 +332,8 @@ class TaxonomiesManager {
 			$rules = array();
 			foreach ( $term_smart_rules as $key => $term_smart_rule ) {
 				$meta_table_alias = $where_field = '';
-				$operator = $a = $b = $encloser_value = '';
+				$encloser_value = "'";
+				$operator = $a = $b = '';
 				$field_key = $term_smart_rule[ 'field' ];
 				$value = esc_sql( stripslashes( $term_smart_rule[ 'rule' ] ) );
 				// identify the operator and match with the correct mysql operator
@@ -417,9 +419,9 @@ class TaxonomiesManager {
 					$where_field = " {$meta_table_alias}.meta_key = '{$field}' ";
 					// add the value rule
 					if ( $field === 'mvn_regular_price' && !empty( $operator ) ) {
-						$where_field .= " AND ( CAST( {$meta_table_alias}.meta_value AS DECIMAL ) {$operator} '{$a}{$value}{$b}' )";
+						$where_field .= " AND ( CAST( {$meta_table_alias}.meta_value AS DECIMAL ) {$operator} {$encloser_value}{$a}{$value}{$b}{$encloser_value} )";
 					} elseif ( !empty( $operator ) ) {
-						$where_field .= " AND ( {$meta_table_alias}.meta_value {$operator} '{$a}{$value}{$b}' )";
+						$where_field .= " AND ( {$meta_table_alias}.meta_value {$operator} {$encloser_value}{$a}{$value}{$b}{$encloser_value} )";
 					}
 					// if the field name contains term: it is a term taxonomy comparison so we will need to join the taxonomy table
 				} elseif ( strpos( $field_key, 'term:' ) !== FALSE ) {
@@ -453,18 +455,20 @@ class TaxonomiesManager {
 					// if the field is the price we need to include a validation to regular and sale
 				} elseif ( strpos( $field_key, 'book:' ) !== FALSE ) {
 					// get of the prefix meta: to get the meta data key
-					$tableName = BooksConfig::bookTableName;
 					$field = str_replace( 'book:', '', $field_key );
 					// create a table alias for this field, it is in case there are another meta values to compare
-					$meta_table_alias = "pm_{$field}_{$key}";
-					// add the metadata table join
-					$join .= " INNER JOIN {$tableName} AS {$meta_table_alias} ON {$wpdb->posts}.ID = {$meta_table_alias}.id ";
+					if( !isset( $book_table_alias ) ){
+						$tableName = BooksConfig::bookTableName;
+						$book_table_alias = "books_table";
+						// add the metadata table join
+						$join .= " INNER JOIN {$tableName} AS {$book_table_alias} ON {$wpdb->posts}.ID = {$book_table_alias}.id ";
+					}
 
 					// add the value rule
 					if ( $field === 'price' && !empty( $operator ) ) {
-						$where_field .= " ( CAST( {$meta_table_alias}.$field AS DECIMAL ) {$operator} '{$a}{$value}{$b}' )";
+						$where_field .= " ( CAST( {$book_table_alias}.$field AS DECIMAL ) {$operator} {$encloser_value}{$a}{$value}{$b}{$encloser_value} )";
 					} elseif ( !empty( $operator ) ) {
-						$where_field .= " ( {$meta_table_alias}.$field {$operator} '{$a}{$value}{$b}' )";
+						$where_field .= " ( {$book_table_alias}.$field {$operator} {$encloser_value}{$a}{$value}{$b}{$encloser_value} )";
 					}
 					// if the field name contains term: it is a term taxonomy comparison so we will need to join the taxonomy table
 				} elseif ( !empty( $operator ) ) {
@@ -481,9 +485,9 @@ class TaxonomiesManager {
 							// if ther is not date set and is not a range of days set it as today
 							$value = date( 'Y-m-d', current_time( 'timestamp' ) );
 						}
-						$where_field = "DATE({$wpdb->posts}.`{$field}`) {$operator} '{$a}{$value}{$b}'";
+						$where_field = "DATE({$wpdb->posts}.`{$field}`) {$operator} {$encloser_value}{$a}{$value}{$b}{$encloser_value}";
 					} else {
-						$where_field = "{$wpdb->posts}.`{$field}` {$operator} '{$a}{$value}{$b}'";
+						$where_field = "{$wpdb->posts}.`{$field}` {$operator} {$encloser_value}{$a}{$value}{$b}{$encloser_value}";
 					}
 				}
 
