@@ -3,16 +3,16 @@
 namespace MavenBooks\Admin\Wp;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class BookController extends \MavenBooks\Admin\BooksAdminController {
 
-	public function __construct() {
+	public function __construct () {
 		parent::__construct();
 	}
 
-	public function init() {
+	public function init () {
 
 
 		if ( $this->getRequest()->isDoingAutoSave() ) {
@@ -26,24 +26,23 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 		$this->getHookManager()->addAction( 'admin_enqueue_scripts', array( $this, 'addScripts' ), 10, 1 );
 		//add_action('edit_form_advanced', array( $this, 'editFormBottom' ), 10, 1 );
 		//add_action('add_meta_boxes',array( $this, 'editFormTop' ),10,2);
-
 		$this->getHookManager()->addAction( 'save_post_' . \MavenBooks\Core\BooksConfig::bookTypeName, array( $this, 'save' ), 10, 2 );
 		$this->getHookManager()->addAction( 'insert_post_' . \MavenBooks\Core\BooksConfig::bookTypeName, array( $this, 'insert' ), 10, 2 );
-		$this->getHookManager()->addAction( 'delete_' . \MavenBooks\Core\BooksConfig::bookTypeName, array( $this, 'delete' ), 10, 3 );
+		$this->getHookManager()->addAction( 'delete_post', array( $this, 'delete' ), 10, 3 );
 	}
 
-	public function currentScreen( $screen ) {
+	public function currentScreen ( $screen ) {
 
 		if ( $screen->post_type === \MavenBooks\Core\BooksConfig::bookTypeName ) {
 			$this->getHookManager()->addAction( 'admin_xml_ns', array( $this, 'adminXml' ) );
 		}
 	}
 
-	function adminXml() {
+	function adminXml () {
 		echo 'ng-app="mavenBooksApp"';
 	}
 
-	function addScripts( $hook ) {
+	function addScripts ( $hook ) {
 
 		global $post;
 
@@ -69,7 +68,7 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 					wp_enqueue_style( 'bootstrap-theme', $registry->getBowerComponentUrl() . "bootstrap/dist/css/bootstrap-theme.css", null, $registry->getPluginVersion() );
 
 					wp_enqueue_style( 'main', $registry->getStylesUrl() . "main.css", array( 'bootstrap', 'bootstrap-theme' ), $registry->getPluginVersion() );
-				}else{
+				} else {
 					wp_enqueue_script( 'mainApp', $registry->getScriptsUrl() . "main.min.js", 'angular', $registry->getPluginVersion() );
 					wp_enqueue_style( 'mainCss', $registry->getStylesUrl() . "main.min.css", array(), $registry->getPluginVersion() );
 				}
@@ -78,12 +77,12 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 	}
 
 	// Add the Books Meta Boxes
-	function addBooksMetaBox() {
+	function addBooksMetaBox () {
 		add_meta_box( 'wpt_books_location', 'Book Information', array( $this, 'showBooks' ), \MavenBooks\Core\BooksConfig::bookTypeName, 'normal', 'default' );
 	}
 
 	// The Book Location Metabox
-	function showBooks() {
+	function showBooks () {
 
 		global $post;
 
@@ -102,15 +101,14 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 	 * @param int $postId
 	 * @param object $post
 	 */
-	public function save( $postId, $post ) {
+	public function save ( $postId, $post ) {
 
 		\Maven\Loggers\Logger::log()->message( '\MavenBooks\Admin\Wp\BookController: save: ' . $postId );
 
 		$this->saveBook( $post );
 	}
- 
 
-	private function saveBook( $post ) {
+	private function saveBook ( $post ) {
 		$book = new \MavenBooks\Core\Domain\Book();
 
 		$mvn = $this->getRequest()->getProperty( 'mvn' );
@@ -119,17 +117,15 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 		if ( $mvn ) {
 
 			\Maven\Loggers\Logger::log()->message( '\MavenBooks\Admin\Wp\BookController: saveBook: ' . $post->ID );
-			
+
 			$book->load( $mvn[ 'book' ] );
-			
+
 			$book->setId( $post->ID );
 			$book->setName( $post->post_title );
 			$book->setDescription( $post->post_content );
 
 			$bookManager = new \MavenBooks\Core\BookManager();
 			$bookManager->addBook( $book );
-
-			 
 		}
 	}
 
@@ -138,7 +134,7 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 	 * @param int $termId
 	 * @param int $taxonomyId
 	 */
-	public function insert( $postId, $post ) {
+	public function insert ( $postId, $post ) {
 
 		\Maven\Loggers\Logger::log()->message( '\MavenBooks\Admin\Wp\BookController: insert' );
 
@@ -151,15 +147,19 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 	 * @param int $taxonomyId
 	 * @param object $deletedTerm
 	 */
-	public function delete( $termId, $taxonomyId, $deletedTerm ) {
+	public function delete ( $postId ) {
+		$post = get_post( $postId );
+		if ( $post->post_type === \MavenBooks\Core\BooksConfig::bookTypeName ) {
+			$bookManager = new \MavenBooks\Core\BookManager();
+			$bookManager->delete( $postId );
+		}
+	}
+
+	public function showForm () {
 		
 	}
 
-	public function showForm() {
-		
-	}
-
-	public function showList() {
+	public function showList () {
 		
 	}
 
