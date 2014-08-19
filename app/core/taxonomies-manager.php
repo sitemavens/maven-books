@@ -176,7 +176,6 @@ class TaxonomiesManager {
 			$where .= " AND CAST({$table}.meta_value AS {$cast}) {$meta_compare} '{$n}{$meta_value}{$n}'";
 		}
 		$ids = $wpdb->get_results( "SELECT {$wpdb->term_taxonomy}.* FROM {$table}{$join} WHERE {$table}.meta_key = '{$meta_key}'{$where}" );
-
 		if ( $single && is_array( $ids ) && count( $ids ) > 0 ) {
 			return $ids[ 0 ];
 		}
@@ -316,15 +315,15 @@ class TaxonomiesManager {
 			$smart_rules[ 'smart_operator' ] = " AND ";
 		}
 
-		$term_smart_rules = $smart_rules[ 'smart_rules' ];
-
 		$term_id = ( int ) $term_id;
 		$term_taxonomy_id = ( int ) $term_taxonomy_id;
 		$join = $where = '';
 		$op = " " . $smart_rules[ 'smart_operator' ] . " ";
 
-		if ( empty( $term_smart_rules ) ) {
+		if ( empty( $smart_rules[ 'smart_rules' ] ) ) {
 			$term_smart_rules = self::getSmartRules( $term_taxonomy_id );
+		}else{
+			$term_smart_rules = $smart_rules[ 'smart_rules' ];
 		}
 
 		// Group smart rules by field to proccess them in the same where rule

@@ -151,7 +151,7 @@ class BooksConfig {
 
 //		global $wp_post_types, $wp_rewrite;
 
-		if( $args->_builtin || !$args->publicly_queryable || !$args->show_ui ){
+		if( $postType !== self::bookTypeName || $args->_builtin || !$args->publicly_queryable || !$args->show_ui ){
 			return false;
 		}
 //
