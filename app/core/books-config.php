@@ -203,7 +203,7 @@ class BooksConfig {
 
 	}
 	
-	function mvnBookPermalink($postLink, $post, $leavename) {
+	public static function mvnBookPermalink($postLink, $post, $leavename) {
 		global $wp_rewrite;
 		
 		if( is_object($post) ){
