@@ -147,7 +147,7 @@ class BooksConfig {
 	 *
 	 */
 
-	public function registeredPostType( $postType, $args ) {
+	public static function registeredPostType( $postType, $args ) {
 
 //		global $wp_post_types, $wp_rewrite;
 
