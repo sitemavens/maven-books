@@ -16,7 +16,7 @@ class BooksConfig {
 	public static function init () {
 
 		\Maven\Core\HookManager::instance()->addInit( array( __CLASS__, 'registerTypes' ) );
-		\Maven\Core\HookManager::instance()->addFilter('post_type_link', array(__CLASS__, 'mvnBookPermalink'), 1, 4);
+		\Maven\Core\HookManager::instance()->addFilter('post_type_link', array(__CLASS__, 'getBookPermalink'), 1, 4);
 		\Maven\Core\HookManager::instance()->addAction('registered_post_type', array(__CLASS__, 'registeredPostType'), 1, 4);
 
 	}
@@ -149,23 +149,10 @@ class BooksConfig {
 
 	public static function registeredPostType( $postType, $args ) {
 
-//		global $wp_post_types, $wp_rewrite;
-
 		if( $postType !== self::bookTypeName || $args->_builtin || !$args->publicly_queryable || !$args->show_ui ){
 			return false;
 		}
-//
-//
-//		$permalink = '%'.$postType.'_slug%'.$permalink;
-//		$permalink = str_replace( '%postname%', '%'.$postType.'%', $permalink );
-//
-//		add_rewrite_tag( '%'.$postType.'_slug%', '('.$args->rewrite['slug'].')','post_type='.$postType.'&slug=' );
-
-//		$taxonomies = CPTP_Util::get_taxonomies( true );
-//		foreach ( $taxonomies as $taxonomy => $objects ):
-//			$wp_rewrite->add_rewrite_tag( "%$taxonomy%", '(.+?)', "$taxonomy=" );
-//		endforeach;
-
+ 
 		$rewrite_args = $args->rewrite;
 		if( !is_array($rewrite_args) ) {
 			$rewrite_args  = array( 'with_front' => $args->rewrite );
@@ -173,37 +160,10 @@ class BooksConfig {
 
 		$rewrite_args["walk_dirs"] = false;
 		add_permastruct( $postType, apply_filters( 'maven-books/config/permalink-structure', $args->rewrite['slug'] . '/%'.$postType.'%' ), $rewrite_args);
-
-
-
-//		$slug = $args->rewrite['slug'];
-//		if( $args->has_archive ){
-//			if( is_string( $args->has_archive ) ){
-//				$slug = $args->has_archive;
-//			}
-//
-//			if($args->rewrite['with_front']) {
-//				$slug = substr( $wp_rewrite->front, 1 ).$slug;
-//			}
-//
-//			add_rewrite_rule( $slug.'/date/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/feed/(feed|rdf|rss|rss2|atom)/?$', 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&feed=$matches[4]&post_type='.$postType, 'top' );
-//			add_rewrite_rule( $slug.'/date/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/(feed|rdf|rss|rss2|atom)/?$', 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&feed=$matches[4]&post_type='.$postType, 'top' );
-//			add_rewrite_rule( $slug.'/date/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/page/?([0-9]{1,})/?$', 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&paged=$matches[4]&post_type='.$postType, 'top' );
-//			add_rewrite_rule( $slug.'/date/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/?$', 'index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&post_type='.$postType, 'top' );
-//			add_rewrite_rule( $slug.'/date/([0-9]{4})/([0-9]{1,2})/feed/(feed|rdf|rss|rss2|atom)/?$', 'index.php?year=$matches[1]&monthnum=$matches[2]&feed=$matches[3]&post_type='.$postType, 'top' );
-//			add_rewrite_rule( $slug.'/date/([0-9]{4})/([0-9]{1,2})/(feed|rdf|rss|rss2|atom)/?$', 'index.php?year=$matches[1]&monthnum=$matches[2]&feed=$matches[3]&post_type='.$postType, 'top' );
-//			add_rewrite_rule( $slug.'/date/([0-9]{4})/([0-9]{1,2})/page/?([0-9]{1,})/?$', 'index.php?year=$matches[1]&monthnum=$matches[2]&paged=$matches[3]&post_type='.$postType, 'top' );
-//			add_rewrite_rule( $slug.'/date/([0-9]{4})/([0-9]{1,2})/?$', 'index.php?year=$matches[1]&monthnum=$matches[2]&post_type='.$postType, 'top' );
-//			add_rewrite_rule( $slug.'/date/([0-9]{4})/feed/(feed|rdf|rss|rss2|atom)/?$', 'index.php?year=$matches[1]&feed=$matches[2]&post_type='.$postType, 'top' );
-//			add_rewrite_rule( $slug.'/date/([0-9]{4})/(feed|rdf|rss|rss2|atom)/?$', 'index.php?year=$matches[1]&feed=$matches[2]&post_type='.$postType, 'top' );
-//			add_rewrite_rule( $slug.'/date/([0-9]{4})/page/?([0-9]{1,})/?$', 'index.php?year=$matches[1]&paged=$matches[2]&post_type='.$postType, 'top' );
-//			add_rewrite_rule( $slug.'/date/([0-9]{4})/?$', 'index.php?year=$matches[1]&post_type='.$postType, 'top' );
-//			add_rewrite_rule( $slug.'/author/([^/]+)/?$', 'index.php?author_name=$matches[1]&post_type='.$postType, 'top' );
-//		}
-
+ 
 	}
 	
-	public static function mvnBookPermalink($postLink, $post, $leavename) {
+	public static function getBookPermalink($postLink, $post, $leaveName) {
 		global $wp_rewrite;
 		
 		if( is_object($post) ){
@@ -249,21 +209,14 @@ class BooksConfig {
 			if( empty($authorSlug) ){ 
 				$authorSlug = 'unauthored';
 			}
-			
-			
-			// get shop page setted in the settings
-//			$shop_page = mvn_shop_settings()->get_setting('shop_page_id');
-
-			// get shop page slug to use it in the urlpath
-//			$shop_slug = get_post($shop_page) && get_page_uri( $shop_page ) ? get_page_uri( $shop_page ) : $this->lang->__('shop');
-
+			 
 			$newlinkStructure = $wp_rewrite->get_extra_permastruct( self::bookTypeName );
 			$arguments = array( 'variables' => array( '%'.self::bookAuthorName.'%', '%post_id%'), 'values' => array( self::bookAuthorName => $authorSlug, 'post_id' => $post->ID ) );
-			if( !$leavename ){
+			if( !$leaveName ){
 				$arguments['variables'][] = '%'.self::bookTypeName.'%';
 				$arguments['values']['self::bookTypeName'] = $post->post_name;
 			}
-			$newlinkStructureArray = apply_filters( 'mvnb_permalink_variables', $arguments, $newlinkStructure, $post );
+			$newlinkStructureArray = apply_filters( 'maven-books/config/permalink-variables', $arguments, $newlinkStructure, $post );
 			
 			
 			$newlinkStructureVariables = $newlinkStructureArray['variables'];
@@ -271,7 +224,7 @@ class BooksConfig {
 			$newlink = str_replace( $newlinkStructureVariables, $newlinkStructureReplace, $newlinkStructure );
 			$postLink = home_url( user_trailingslashit( $newlink, 'single' ) );
 		}
-		return apply_filters( 'mvnb_permalink', $postLink, $post->ID );
+		return apply_filters( 'maven-books/config/permalink', $postLink, $post->ID );
 	}
 
 }
