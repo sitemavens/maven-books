@@ -70,6 +70,7 @@ $hookManager = $director->getHookManager( $registry );
 
 $hookManager->addFilter( 'maven\core\intelligenceReport:data', array( 'MavenBooks\\Core\\IntelligenceReport', 'generateData' ), 10, 2 );
 
+Api\Loader::init();
 
 Front\BooksFrontEnd::registerFrontEndHooks();
 
