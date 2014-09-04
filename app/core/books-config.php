@@ -95,6 +95,7 @@ class BooksConfig {
 			'menu_name' => __( 'Book Categories' )
 		);
 
+                $catSlug = \Maven\Core\HookManager::instance()->applyFilters( 'maven-books/config/catSlug', 'book-category' );
 		$args = array(
 			'hierarchical' => true,
 			'labels' => $labels,
@@ -102,7 +103,7 @@ class BooksConfig {
 			'show_admin_column' => true,
 			'update_count_callback' => '_update_post_term_count',
 			'query_var' => true,
-			'rewrite' => array( 'slug' => 'book-category' )
+			'rewrite' => array( 'slug' => $catSlug )
 		);
 
 		register_taxonomy( BooksConfig::bookCategoryName, BooksConfig::bookTypeName, $args );
@@ -127,6 +128,7 @@ class BooksConfig {
 			'menu_name' => __( 'Book Authors' )
 		);
 
+                $authorSlug = \Maven\Core\HookManager::instance()->applyFilters( 'maven-books/config/authorSlug', 'book-author' );
 		$args = array(
 			'hierarchical' => true,
 			'labels' => $labels,
@@ -134,7 +136,7 @@ class BooksConfig {
 			'show_admin_column' => true,
 			'update_count_callback' => '_update_post_term_count',
 			'query_var' => true,
-			'rewrite' => array( 'slug' => 'book-author' )
+			'rewrite' => array( 'slug' => $authorSlug )
 		);
 
 		register_taxonomy( BooksConfig::bookAuthorName, BooksConfig::bookTypeName, $args );
