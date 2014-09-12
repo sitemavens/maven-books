@@ -194,8 +194,8 @@ class TaxonomiesManager {
 	 */
 	public static function relateProductsWithSmartCategories ( $term_id, $term_taxonomy_id, $taxonomy, $smart_rules = array(), $objects = array() ) {
 		global $wpdb;
-
-		if ( !term_exists( ( int ) $term_id, $taxonomy ) ) {
+		$term = get_term_by( 'term_taxonomy_id', $term_taxonomy_id, $taxonomy);
+		if ( !$term ) {
 			return false;
 		}
 
@@ -216,7 +216,7 @@ class TaxonomiesManager {
 		if ( !empty( $products_to_add ) ) {
 			self::relateObjectsToTerm( $products_to_add, $term_id, $taxonomy );
 		}
-
+		do_action( 'mvn_smart_categories_processed_objects', $term_id, $term_taxonomy_id, $taxonomy, $all_products, $current_products, $products_to_add, $products_to_delete );
 		unset( $products_to_add, $products_to_delete, $current_products, $all_products );
 		do_action( 'mvn_process_smart_categories_rules', $term_id, $term_taxonomy_id, $taxonomy, $smart_rules );
 	}
@@ -239,12 +239,13 @@ class TaxonomiesManager {
 			}
 
 			foreach ( ( array ) $objects as $object ) {
-				$terms = wp_get_object_terms( $object, $taxonomy, array( 'fields' => 'ids', 'orderby' => 'none' ) );
-				$terms = array_diff( $terms, array( $term_id ) );
-				$terms = array_map( 'intval', $terms );
-				wp_set_object_terms( $object, $terms, $taxonomy );
+//				$terms = wp_get_object_terms( $object, $taxonomy, array( 'fields' => 'ids', 'orderby' => 'none' ) );
+//				$terms = array_diff( $terms, array( $term_id ) );
+//				$terms = array_map( 'intval', $terms );
+//				wp_set_object_terms( $object, $terms, $taxonomy );
+				wp_remove_object_terms( $object, $term_id, $taxonomy );
 			}
-			wp_update_term_count( $tt_id, $taxonomy );
+//			wp_update_term_count( $tt_id, $taxonomy );
 		}
 	}
 
