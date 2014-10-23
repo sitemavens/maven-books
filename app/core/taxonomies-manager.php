@@ -177,7 +177,7 @@ class TaxonomiesManager {
 		}
 		$ids = $wpdb->get_results( "SELECT {$wpdb->term_taxonomy}.* FROM {$table}{$join} WHERE {$table}.meta_key = '{$meta_key}'{$where}" );
 		if ( $single && is_array( $ids ) && count( $ids ) > 0 ) {
-			return $ids[ 0 ];
+			return $ids[0];
 		}
 		return $ids;
 	}
@@ -194,7 +194,7 @@ class TaxonomiesManager {
 	 */
 	public static function relateProductsWithSmartCategories ( $term_id, $term_taxonomy_id, $taxonomy, $smart_rules = array(), $objects = array() ) {
 		global $wpdb;
-		$term = get_term_by( 'term_taxonomy_id', $term_taxonomy_id, $taxonomy);
+		$term = get_term_by( 'term_taxonomy_id', $term_taxonomy_id, $taxonomy );
 		if ( !$term ) {
 			return false;
 		}
@@ -312,19 +312,19 @@ class TaxonomiesManager {
 		} else {
 			$objects_where = '';
 		}
-		if ( !isset( $smart_rules[ 'smart_operator' ] ) || ($smart_rules[ 'smart_operator' ] == '') || empty( $smart_rules[ 'smart_operator' ] ) ) {
-			$smart_rules[ 'smart_operator' ] = " AND ";
+		if ( !isset( $smart_rules['smart_operator'] ) || ($smart_rules['smart_operator'] == '') || empty( $smart_rules['smart_operator'] ) ) {
+			$smart_rules['smart_operator'] = " AND ";
 		}
 
 		$term_id = ( int ) $term_id;
 		$term_taxonomy_id = ( int ) $term_taxonomy_id;
 		$join = $where = '';
-		$op = " " . $smart_rules[ 'smart_operator' ] . " ";
+		$op = " " . $smart_rules['smart_operator'] . " ";
 
-		if ( empty( $smart_rules[ 'smart_rules' ] ) ) {
+		if ( empty( $smart_rules['smart_rules'] ) ) {
 			$term_smart_rules = self::getSmartRules( $term_taxonomy_id );
-		}else{
-			$term_smart_rules = $smart_rules[ 'smart_rules' ];
+		} else {
+			$term_smart_rules = $smart_rules['smart_rules'];
 		}
 
 		// Group smart rules by field to proccess them in the same where rule
@@ -334,10 +334,10 @@ class TaxonomiesManager {
 				$meta_table_alias = $where_field = '';
 				$encloser_value = "'";
 				$operator = $a = $b = '';
-				$field_key = $term_smart_rule[ 'field' ];
-				$value = esc_sql( stripslashes( $term_smart_rule[ 'rule' ] ) );
+				$field_key = trim( $term_smart_rule['field'] );
+				$value = esc_sql( stripslashes( trim($term_smart_rule['rule'] ) );
 				// identify the operator and match with the correct mysql operator
-				switch ( $term_smart_rule[ 'operator' ] ) {
+				switch ( $term_smart_rule['operator'] ) {
 					case 'none':
 						$operator = '';
 						break;
@@ -440,7 +440,7 @@ class TaxonomiesManager {
 							$value = implode( ',', $value );
 						}
 
-						if ( $term_smart_rule[ 'operator' ] == 'not_in' ) {
+						if ( $term_smart_rule['operator'] == 'not_in' ) {
 							// add the value rule
 							$where_field .= "{$wpdb->posts}.`ID` NOT IN ( SELECT `trb`.`object_id` FROM {$wpdb->term_relationships} AS trb WHERE `trb`.`term_taxonomy_id` IN ( {$value} ) )";
 						} else {
@@ -457,7 +457,7 @@ class TaxonomiesManager {
 					// get of the prefix meta: to get the meta data key
 					$field = str_replace( 'book:', '', $field_key );
 					// create a table alias for this field, it is in case there are another meta values to compare
-					if( !isset( $book_table_alias ) ){
+					if ( !isset( $book_table_alias ) ) {
 						$tableName = BooksConfig::bookTableName;
 						$book_table_alias = "books_table";
 						// add the metadata table join
