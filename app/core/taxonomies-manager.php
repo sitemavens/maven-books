@@ -335,7 +335,7 @@ class TaxonomiesManager {
 				$encloser_value = "'";
 				$operator = $a = $b = '';
 				$field_key = trim( $term_smart_rule['field'] );
-				$value = esc_sql( stripslashes( trim($term_smart_rule['rule'] ) );
+				$value = esc_sql( stripslashes( trim( $term_smart_rule['rule'] ) ) );
 				// identify the operator and match with the correct mysql operator
 				switch ( $term_smart_rule['operator'] ) {
 					case 'none':
