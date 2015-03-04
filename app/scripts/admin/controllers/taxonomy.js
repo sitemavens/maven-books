@@ -59,5 +59,11 @@ angular.module('mavenBooksApp').controller('TaxonomyController', ['$scope', '$ht
 			angular.element(document.getElementById('submit')).removeProp("disabled");
 			return true;
 		};
+		jQuery('#search-submit').on('click', function() {
+			jQuery('form.search-form').submit();
+		});
+		jQuery('#doaction').on('click',function() {
+			jQuery('#posts-filter').submit();
+		});
 	}]);
  
