@@ -32,7 +32,6 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 	}
 
 	public function currentScreen ( $screen ) {
-
 		if ( $screen->post_type === \MavenBooks\Core\BooksConfig::bookTypeName ) {
 			$this->getHookManager()->addAction( 'admin_xml_ns', array( $this, 'adminXml' ) );
 		}

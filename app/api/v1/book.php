@@ -43,6 +43,7 @@ class Book {
 		$routes[ '/maven-books/v1/books/(?P<id>\d+)' ] = array(
 			array( array( $this, 'get' ), \WP_JSON_Server::READABLE )
 		);
+        
 
 
 		return $routes;
@@ -51,8 +52,8 @@ class Book {
 	public function get ( $id ) {
 
 		$book = $this->manager->get( $id );
-
-		if ( !$book->isEmpty() ) {
+        $book = apply_filters('maven-books/api/getBook', $book);
+		if ( $book ) {
 			$this->sendResponse( \Maven\Core\Message\MessageManager::createSuccessfulMessage( 'Book found', $book ) );
 		}else{
 			$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'Book not found' ) );
