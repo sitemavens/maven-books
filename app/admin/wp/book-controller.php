@@ -106,7 +106,6 @@ class BookController extends \MavenBooks\Admin\BooksAdminController {
 
 		$this->saveBook( $post );
 	}
-
 	private function saveBook ( $post ) {
 		$book = new \MavenBooks\Core\Domain\Book();
 

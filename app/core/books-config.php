@@ -18,6 +18,8 @@ class BooksConfig {
 		\Maven\Core\HookManager::instance()->addInit( array( __CLASS__, 'registerTypes' ) );
 		\Maven\Core\HookManager::instance()->addFilter('post_type_link', array(__CLASS__, 'getBookPermalink'), 1, 4);
 		\Maven\Core\HookManager::instance()->addAction('registered_post_type', array(__CLASS__, 'registeredPostType'), 1, 4);
+        \Maven\Core\HookManager::instance()->addAction( 'maven/cart/itemPaid/maven-books', array( __CLASS__, 'paidBook' ), 10, 1 );
+        \Maven\Core\HookManager::instance()->addAction( 'maven/cart/checkStock', array( __CLASS__, 'checkBooksStock' ), 10, 1 );
 
 	}
 
@@ -164,6 +166,32 @@ class BooksConfig {
 		add_permastruct( $postType, apply_filters( 'maven-books/config/permalink-structure', $args->rewrite['slug'] . '/%'.$postType.'%' ), $rewrite_args);
  
 	}
+    
+    public static function paidBook ( $orderItem ) {
+        
+        $bookManager = new \MavenBooks\Core\BookManager();
+
+		$book = $bookManager->get( $orderItem->getThingId());
+        if ($book->isStockEnabled() && $book->getStockQuantity() > 0) {
+            $book->setStockQuantity($book->getStockQuantity() - 1);
+        }
+        $bookManager->addBook($book);
+	}
+    
+    public static function checkBooksStock ( $orderItems ) {
+        $bookManager = new \MavenBooks\Core\BookManager();
+        $hasStock = true;
+        foreach($orderItems as $orderItem){
+            if ($hasStock) {
+                $book = $bookManager->get( $orderItem->getThingId());
+                if ($book->isStockEnabled() && $book->getStockQuantity() == 0) {
+                    $hasStock = false;
+                }
+            }
+        }
+        return $hasStock;
+	}
+
 	
 	public static function getBookPermalink($postLink, $post, $leaveName) {
 		global $wp_rewrite;
